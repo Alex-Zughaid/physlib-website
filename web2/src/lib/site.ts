@@ -1,0 +1,74 @@
+export const site = {
+  name: "Physlib",
+  title: "Physlib: Digitalizing Physics in Lean 4",
+  description:
+    "An open-source community project to digitalize results from physics into Lean 4. Formerly PhysLean & Lean-QuantumInfo.",
+  url: "https://physlib.io",
+  github: "https://github.com/lean-phys-community/PhysLean",
+  zulip: "https://leanprover.zulipchat.com/#narrow/channel/479953-PhysLean",
+  search: "https://leandex.projectnumina.ai/",
+  notes: "https://notes.physlean.com",
+  docs: "/docs/",
+};
+
+export type NavItem = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
+export type NavSection = {
+  label: string;
+  items: NavItem[];
+};
+
+export const navSections: NavSection[] = [
+  {
+    label: "Basics",
+    items: [
+      { label: "Home", href: "/" },
+      { label: "Getting Started", href: "/getting-started" },
+      { label: "Maintainers", href: "/maintainers" },
+      { label: "News", href: "/news" },
+      { label: "Discussion", href: site.zulip, external: true },
+    ],
+  },
+  {
+    label: "Goal trackers",
+    items: [
+      { label: "API development", href: "/api-tracker" },
+      { label: "PR triage", href: "/pr-tracker" },
+      { label: "Documentation", href: "/documentation-tracker" },
+      { label: "TODO list", href: "/todo" },
+    ],
+  },
+  {
+    label: "Get involved",
+    items: [
+      { label: "Project ideas", href: "/project-ideas" },
+      { label: "Ways to contribute", href: "/get-involved" },
+      { label: "APIs", href: "/apis" },
+    ],
+  },
+  {
+    label: "Explore",
+    items: [
+      { label: "Dependency graphs", href: "/dependencies" },
+      { label: "Search Physlib", href: site.search, external: true },
+      { label: "Curated notes", href: site.notes, external: true },
+    ],
+  },
+  {
+    label: "Support",
+    items: [{ label: "Sponsor", href: "/sponsor" }],
+  },
+];
+
+export const primaryNav: NavItem[] = [
+  { label: "Home", href: "/" },
+  { label: "Getting Started", href: "/getting-started" },
+  { label: "Get Involved", href: "/get-involved" },
+  { label: "Trackers", href: "/api-tracker" },
+  { label: "News", href: "/news" },
+  { label: "Sponsor", href: "/sponsor" },
+];

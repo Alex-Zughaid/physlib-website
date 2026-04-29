@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+/* ─── Together AI design system ────────────────────────────── */
+
+/* Sharp geometry (4px base radius) */
+:root {
+  --radius: 0.25rem;
+}
+
+/* Light mode — pure white canvas, blue accent */
+:root,
+[data-theme="light"] {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0 0 0);
+  --accent: oklch(0.55 0.19 235);
+  --accent-foreground: oklch(1 0 0);
+  --border: oklch(0 0 0 / 0.08);
+  --muted: oklch(0 0 0 / 0.45);
+  --surface: oklch(1 0 0);
+  --surface-secondary: oklch(0.97 0 0);
+  /* Intentional dark zones (Mission, Audiences, Footer) */
+  --section-emphasis: oklch(0.085 0.04 270);
+  --section-emphasis-border: oklch(1 0 0 / 0.12);
+  --section-emphasis-fg: oklch(1 0 0);
+}
+
+/* Dark mode — midnight blue */
+[data-theme="dark"] {
+  --background: oklch(0.085 0.04 270);
+  --foreground: oklch(1 0 0);
+  --accent: oklch(0.72 0.18 230);
+  --accent-foreground: oklch(0.085 0.04 270);
+  --border: oklch(1 0 0 / 0.12);
+  --muted: oklch(1 0 0 / 0.55);
+  --surface: oklch(0.085 0.04 270);
+  --surface-secondary: oklch(0.12 0.04 270);
+  /* Dark zones slightly lighter than background for separation */
+  --section-emphasis: oklch(0.14 0.04 270);
+  --section-emphasis-border: oklch(1 0 0 / 0.10);
+  --section-emphasis-fg: oklch(1 0 0);
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+html { background: var(--background); color: var(--foreground); }
+
+body {
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ─── Typography utilities ──────────────────────────────────── */
+/* Negative tracking at every scale, weight-500 emphasis */
+.tracking-display  { letter-spacing: -0.12em; }
+.tracking-heading  { letter-spacing: -0.04em; }
+.tracking-sub      { letter-spacing: -0.025em; }
+.tracking-body     { letter-spacing: -0.01em; }
+
+/* Monospace uppercase labels (PP Neue Montreal Mono substitute) */
+.label-mono {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+  font-size: 0.69rem;
+  font-weight: 500;
+}
+
+/* ─── Shadows ───────────────────────────────────────────────── */
+.shadow-together {
+  box-shadow: rgba(1, 1, 32, 0.10) 0px 4px 10px;
+}
+
+/* ─── Hero gradient — accent blue tones ────────────────────────── */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 70% 60% at 20% 30%, oklch(0.55 0.19 235 / 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, oklch(0.55 0.19 235 / 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 70%, oklch(0.55 0.19 235 / 0.06) 0%, transparent 60%),
+    var(--background);
+}
+
+[data-theme="dark"] .hero-gradient {
+  background:
+    radial-gradient(ellipse 70% 60% at 20% 30%, oklch(0.72 0.18 230 / 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, oklch(0.72 0.18 230 / 0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 70%, oklch(0.72 0.18 230 / 0.07) 0%, transparent 60%),
+    var(--background);
+}
+
+/* ─── Animations ────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.animate-fade-up { animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+
+/* ─── Prose ─────────────────────────────────────────────────── */
+@layer components {
+  .prose-physlib { @apply text-foreground leading-relaxed; }
+  .prose-physlib h1 { @apply text-3xl md:text-4xl font-medium mt-10 mb-4; letter-spacing: -0.04em; }
+  .prose-physlib h2 { @apply text-2xl md:text-3xl font-medium mt-8 mb-3; letter-spacing: -0.025em; }
+  .prose-physlib h3 { @apply text-xl md:text-2xl font-medium mt-6 mb-2; }
+  .prose-physlib h4 { @apply text-lg font-medium mt-4 mb-2; }
+  .prose-physlib p  { @apply my-3; }
+  .prose-physlib ul { @apply list-disc pl-6 my-3 space-y-1; }
+  .prose-physlib ol { @apply list-decimal pl-6 my-3 space-y-1; }
+  .prose-physlib a  { @apply text-accent hover:underline underline-offset-2; }
+  .prose-physlib code {
+    @apply bg-surface-secondary px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+  .prose-physlib pre {
+    @apply bg-surface-secondary border border-border rounded p-4 my-4 overflow-x-auto text-sm;
+  }
+  .prose-physlib pre code { @apply bg-transparent p-0; }
+  .prose-physlib blockquote {
+    @apply border-l-4 border-accent/40 pl-4 italic my-4 text-muted;
+  }
+  .prose-physlib hr  { @apply border-border my-8; }
+  .prose-physlib table { @apply w-full border-collapse my-4; }
+  .prose-physlib th, .prose-physlib td { @apply border border-border px-3 py-2 text-left; }
+  .prose-physlib th  { @apply bg-surface-secondary font-medium; }
+  .prose-physlib img { @apply rounded my-4 max-w-full h-auto; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}

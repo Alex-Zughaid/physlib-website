@@ -8,7 +8,7 @@ export const site = {
   zulip: "https://leanprover.zulipchat.com/#narrow/channel/479953-PhysLean",
   search: "https://physlibsearch.net",
   notes: "https://notes.physlean.com",
-  docs: "https://physlib.io/docs/",
+  docs: "/docs/",
 };
 
 export type NavItem = {

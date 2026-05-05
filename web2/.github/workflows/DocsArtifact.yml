@@ -1,0 +1,106 @@
+on:
+    schedule:
+        - cron: '0 2/18 * * *'  # Run every 8 hours
+    workflow_dispatch:       # Allows manual triggering from the GitHub Actions tab
+
+  
+name: Archive site files and documentation from Physlib
+  
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  
+jobs:
+  build_project:
+      runs-on: ubuntu-latest
+      name: Build project
+      steps:
+        - name: Checkout project
+          uses: actions/checkout@v4
+          with:
+            repository: leanprover-community/physlib
+            fetch-depth: 0
+  
+        - name: Install Graphviz
+          run: sudo apt-get update && sudo apt-get install -y graphviz
+  
+        - name: Verify Graphviz Installation
+          run: dot -V
+        ##################
+        # Remove this section if you don't want docs to be made
+        - name: Install elan
+          run: |
+            set -o pipefail
+            curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- --default-toolchain none -y
+            ~/.elan/bin/lean --version
+            echo "$HOME/.elan/bin" >> $GITHUB_PATH
+  
+        - name: Get Mathlib cache
+          run: lake -Kenv=dev exe cache get || true
+  
+        - name: Build project
+          run: lake -Kenv=dev build
+        
+        - name: Ensure docs data directory exists
+          run: mkdir -p docs/_data
+          
+        - name: make TODO list
+          run : lake exe TODO_to_yml mkFile
+  
+        - name: make list of informal proofs and lemmas
+          run : lake exe informal mkFile mkDot mkHTML
+  
+        - name: make stats page
+          run : lake exe stats mkHTML
+  
+        - name: Generate svg from dot
+          run : dot -Tsvg -o ./docs/graph.svg ./docs/InformalDot.dot
+  
+        - name: Replace template file with custom
+          run : cp ./scripts/Template.lean .lake/packages/doc-gen4/DocGen4/Output/Template.lean
+  
+        - name: Build documentation
+          run: lake -Kenv=dev build Physlib:docs QuantumInfo:docs
+        #End Section
+        ##################
+
+        #Moving important files to the
+
+        - name: Create doc-artifact directory
+          run: mkdir -p doc-artifact
+        
+        - name : Move the data sets
+          run: mv docs/_data doc-artifact/_data
+        
+        - name : Move the stats file 
+          run : mv docs/Stats.html doc-artifact/Stats.html    
+        
+        - name : Move the informal proofs and lemmas dot file
+          run : mv docs/InformalDot.dot doc-artifact/InformalDot.dot
+
+        - name : Move the informal proofs and lemmas
+          run : mv docs/InformalGraph.html doc-artifact/InformalGraph.html
+
+        - name: Copy documentation to `doc-artifact/docs`
+          run: |
+            mv .lake/build/doc doc-artifact/docs
+        
+        # Upload the documentation artifact
+        - name: Upload documentation artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: documentation
+            path: doc-artifact/
+            retention-days: 90
+
+        - name: Trigger Vercel Deploy Hook
+          env:
+            VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+          run: |
+            if [ -n "$VERCEL_DEPLOY_HOOK_URL" ]; then
+              curl -X POST "$VERCEL_DEPLOY_HOOK_URL"
+              echo "Vercel deploy hook triggered."
+            else
+              echo "VERCEL_DEPLOY_HOOK_URL is not set. Skipping Vercel trigger."
+            fi

@@ -7,9 +7,9 @@ import { site } from "@/lib/site";
 import { ThemeToggle } from "./theme-toggle";
 
 const links = [
-  { label: "Docs", href: "/getting-started" },
+  { label: "Docs", href: site.docs },
+  { label: "Todo list", href: "/todo" },
   { label: "Get Involved", href: "/get-involved" },
-  { label: "News", href: "/news" },
   { label: "Trackers", href: "/api-tracker" },
   { label: "Sponsor", href: "/sponsor" },
 ];
@@ -62,6 +62,19 @@ export function Navbar() {
           {/* Right */}
           <div className="flex items-center gap-2">
             <a
+              href={site.search}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1.5 h-8 rounded px-3 text-xs font-medium transition-opacity hover:opacity-80"
+              style={{
+                background: "var(--accent)",
+                color: "var(--accent-foreground)",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Search
+            </a>
+            <a
               href={site.github}
               target="_blank"
               rel="noopener noreferrer"
@@ -108,17 +121,29 @@ export function Navbar() {
                 </Link>
               );
             })}
-            <a
-              href={site.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
-              className="mt-6 inline-flex items-center gap-2 h-11 rounded px-4 text-sm font-medium w-full justify-center transition-opacity hover:opacity-80"
-              style={{ background: "var(--section-emphasis)", color: "var(--section-emphasis-fg)" }}
-            >
-              <GitHubIcon />
-              GitHub
-            </a>
+            <div className="mt-6 flex flex-col gap-3">
+              <a
+                href={site.search}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center gap-2 h-11 rounded px-4 text-sm font-medium w-full justify-center transition-opacity hover:opacity-80"
+                style={{ background: "var(--accent)", color: "var(--accent-foreground)" }}
+              >
+                Search Physlib
+              </a>
+              <a
+                href={site.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center gap-2 h-11 rounded px-4 text-sm font-medium w-full justify-center transition-opacity hover:opacity-80"
+                style={{ background: "var(--section-emphasis)", color: "var(--section-emphasis-fg)" }}
+              >
+                <GitHubIcon />
+                GitHub
+              </a>
+            </div>
           </nav>
         </div>
       )}

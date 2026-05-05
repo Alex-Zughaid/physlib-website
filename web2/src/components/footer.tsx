@@ -10,7 +10,7 @@ const footerLinks = {
   Community: [
     { label: "Get Involved", href: "/get-involved" },
     { label: "Maintainers", href: "/maintainers" },
-    { label: "News", href: "/news" },
+    { label: "Todo list", href: "/todo" },
     { label: "Discussion", href: site.zulip, external: true },
   ],
   Explore: [
@@ -103,7 +103,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-14 pt-6 border-t border-border flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-xs text-foreground/30" style={{ letterSpacing: "-0.01em" }}>
+        <div className="mt-14 pt-6 border-t border-border flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-xs text-foreground/30" style={{ letterSpacing: "-0.01em" }}>
           <p>
             Maintained by the{" "}
             <a
@@ -116,7 +116,16 @@ export function Footer() {
             </a>
             . Open-source, Apache 2.0.
           </p>
-          <p>Physics in Lean 4</p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+            <p>Physics in Lean 4</p>
+            <div className="hidden sm:block w-px h-3 bg-foreground/20" />
+            <div className="flex items-center gap-2">
+              <span>Website by</span>
+              <a href="https://kernel-science.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity">
+                <img src="/images/kernel_science_logo.png" alt="Kernel Science" className="h-4 w-auto" />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,0 +1,57 @@
+/* 
+  Custom CSS Theme for doc-gen4
+  This file overrides the default Lean documentation colors
+  to match the Physlib Next.js website design system.
+*/
+
+:root {
+  /* Inherit main site colors using generic approximations if variables aren't exposed */
+  --bg-color: #0d0d0d;
+  --text-color: #ededed;
+  --link-color: #e5e5e5;
+  --sidebar-bg: #111111;
+  --sidebar-text: #a1a1aa;
+  --code-bg: #1e1e1e;
+  --border-color: #27272a;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+nav {
+  background-color: var(--sidebar-bg) !important;
+  border-right: 1px solid var(--border-color);
+}
+
+a {
+  color: var(--link-color) !important;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+pre, code {
+  background-color: var(--code-bg) !important;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.nav-link {
+  color: var(--sidebar-text) !important;
+}
+
+.nav-link:hover {
+  color: var(--text-color) !important;
+}
+
+/* Adjust top bar if present */
+header {
+  background-color: var(--bg-color) !important;
+  border-bottom: 1px solid var(--border-color);
+}

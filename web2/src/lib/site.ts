@@ -6,9 +6,9 @@ export const site = {
   url: "https://physlib.io",
   github: "https://github.com/lean-phys-community/PhysLean",
   zulip: "https://leanprover.zulipchat.com/#narrow/channel/479953-PhysLean",
-  search: "https://leandex.projectnumina.ai/",
+  search: "https://physlibsearch.net",
   notes: "https://notes.physlean.com",
-  docs: "/docs/",
+  docs: "https://physlib.io/docs/",
 };
 
 export type NavItem = {
@@ -29,7 +29,6 @@ export const navSections: NavSection[] = [
       { label: "Home", href: "/" },
       { label: "Getting Started", href: "/getting-started" },
       { label: "Maintainers", href: "/maintainers" },
-      { label: "News", href: "/news" },
       { label: "Discussion", href: site.zulip, external: true },
     ],
   },
@@ -69,6 +68,6 @@ export const primaryNav: NavItem[] = [
   { label: "Getting Started", href: "/getting-started" },
   { label: "Get Involved", href: "/get-involved" },
   { label: "Trackers", href: "/api-tracker" },
-  { label: "News", href: "/news" },
+  { label: "Todo list", href: "/todo" },
   { label: "Sponsor", href: "/sponsor" },
 ];

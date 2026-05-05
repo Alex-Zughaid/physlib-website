@@ -100,6 +100,21 @@ async function run() {
   
   fs.unlinkSync(zipPath); // clean up zip
 
+  // Move generated _data to data
+  const publicDataPath = path.join(__dirname, '../public/_data');
+  const dataPath = path.join(__dirname, '../data');
+  
+  if (fs.existsSync(publicDataPath)) {
+    console.log('Moving generated _data files to data directory...');
+    const dataFiles = fs.readdirSync(publicDataPath);
+    for (const file of dataFiles) {
+      fs.copyFileSync(path.join(publicDataPath, file), path.join(dataPath, file));
+    }
+    // Clean up public/_data so it doesn't get served statically
+    fs.rmSync(publicDataPath, { recursive: true, force: true });
+    console.log('Data files moved successfully.');
+  }
+
   console.log('Applying custom CSS theme...');
   const themeCssPath = path.join(__dirname, '../public/docs-theme.css');
   const targetCssPath = path.join(publicDocsPath, 'style.css');

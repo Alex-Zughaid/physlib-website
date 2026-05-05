@@ -112,6 +112,27 @@ async function run() {
     console.warn('Could not find docs-theme.css or style.css to apply overrides.');
   }
 
+  console.log('Fixing documentation header links...');
+  function fixLinksInDirectory(dir) {
+    const files = fs.readdirSync(dir);
+    for (const file of files) {
+      const fullPath = path.join(dir, file);
+      if (fs.statSync(fullPath).isDirectory()) {
+        fixLinksInDirectory(fullPath);
+      } else if (fullPath.endsWith('.html')) {
+        let content = fs.readFileSync(fullPath, 'utf8');
+        // Replace the broken Physlib documentation header link with a link to the homepage
+        content = content.replace(/<a([^>]*?)href="[^"]*?"([^>]*?)>(\s*Physlib\s+documentation\s*)<\/a>/gi, '<a$1href="/"$2>$3</a>');
+        fs.writeFileSync(fullPath, content);
+      }
+    }
+  }
+  
+  if (fs.existsSync(publicDocsPath)) {
+    fixLinksInDirectory(publicDocsPath);
+    console.log('Documentation links fixed successfully.');
+  }
+
   console.log('Documentation download and setup complete!');
 }
 

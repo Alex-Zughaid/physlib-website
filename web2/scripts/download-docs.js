@@ -3,7 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const REPO = process.env.GITHUB_REPOSITORY || 'leanprover-community/physlib';
+const REPO = process.env.GITHUB_REPOSITORY || 
+             (process.env.VERCEL_GIT_REPO_OWNER && process.env.VERCEL_GIT_REPO_SLUG ? 
+              `${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}` : 
+              'Gabrielebattimelli/Physlib-Website');
 const TOKEN = process.env.GITHUB_TOKEN;
 
 if (!TOKEN) {
@@ -53,8 +56,9 @@ async function run() {
   const runsData = await fetchJson(`https://api.github.com/repos/${REPO}/actions/workflows/DocsArtifact.yml/runs?status=completed&per_page=1`);
   
   if (!runsData.workflow_runs || runsData.workflow_runs.length === 0) {
-    console.error('No completed runs found for DocsArtifact.yml');
-    process.exit(1);
+    console.warn('⚠️ No completed runs found for DocsArtifact.yml in ' + REPO);
+    console.warn('⚠️ Skipping docs download for this build. Please run the workflow manually in GitHub Actions!');
+    process.exit(0); // Exit gracefully so Vercel build succeeds without docs
   }
 
   const runId = runsData.workflow_runs[0].id;

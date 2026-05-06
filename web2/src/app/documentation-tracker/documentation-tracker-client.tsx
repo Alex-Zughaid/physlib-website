@@ -7,7 +7,7 @@ async function buildDot(): Promise<string> {
   const [dotRes, undocRes] = await Promise.all([
     fetch("/my_graph.dot"),
     fetch(
-      "https://raw.githubusercontent.com/lean-phys-community/PhysLean/master/scripts/MetaPrograms/module_doc_no_lint.txt",
+      "https://raw.githubusercontent.com/leanprover-community/physlib/master/scripts/MetaPrograms/module_doc_no_lint.txt",
     ),
   ]);
 
@@ -27,7 +27,7 @@ async function buildDot(): Promise<string> {
     (match, name, attrs) => {
       const isUndoc = undocumented.has(name);
       const fillColor = isUndoc ? "#FFCCCC" : "#CCFFCC";
-      const url = `https://github.com/lean-phys-community/PhysLean/blob/master/${name.replace(/\./g, "/")}.lean`;
+      const url = `https://github.com/leanprover-community/physlib/blob/master/${name.replace(/\./g, "/")}.lean`;
       let newAttrs = attrs + `, URL="${url}"`;
       if (newAttrs.includes("fillcolor=")) {
         newAttrs = newAttrs.replace(/fillcolor="[^"]+"/, `fillcolor="${fillColor}"`);

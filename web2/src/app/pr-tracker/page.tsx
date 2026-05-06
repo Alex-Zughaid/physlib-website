@@ -16,7 +16,7 @@ export default function PRTrackerPage() {
       <p className="text-muted mb-8">
         PRs are categorised by what action is needed.{" "}
         <a
-          href="https://github.com/HEPLean/PhysLean/pulls"
+          href="https://github.com/leanprover-community/physlib/pulls"
           target="_blank"
           rel="noopener noreferrer"
           className="text-accent hover:underline underline-offset-2"

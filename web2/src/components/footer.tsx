@@ -16,7 +16,6 @@ const footerLinks = {
   Explore: [
     { label: "Dependency Graphs", href: "/dependencies" },
     { label: "Search Physlib", href: site.search, external: true },
-    { label: "Curated Notes", href: site.notes, external: true },
     { label: "GitHub", href: site.github, external: true },
   ],
   Support: [
@@ -112,7 +111,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="hover:text-foreground/60 transition-colors"
             >
-              lean-phys-community
+              leanprover-community
             </a>
             . Open-source, Apache 2.0.
           </p>

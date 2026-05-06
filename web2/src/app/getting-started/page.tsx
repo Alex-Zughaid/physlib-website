@@ -99,12 +99,12 @@ export default function GettingStartedPage() {
             <li>
               Clone the repository:{" "}
               <a
-                href="https://github.com/lean-phys-community/PhysLean"
+                href="https://github.com/leanprover-community/physlib"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-accent hover:underline underline-offset-2"
               >
-                github.com/lean-phys-community/PhysLean
+                github.com/leanprover-community/physlib
               </a>
             </li>
             <li>
@@ -417,6 +417,6 @@ import PhysLean.Meta.Informal.Basic`,
   {
     title: "Update the main import file",
     description:
-      "Add your new file to ./PhysLean.lean in alphabetical order as an import.",
+      "Add your new file to ./PhysLean.lean (or the main entry file) in alphabetical order as an import.",
   },
 ];

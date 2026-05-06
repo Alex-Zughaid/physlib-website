@@ -4,10 +4,9 @@ export const site = {
   description:
     "An open-source community project to digitalize results from physics into Lean 4. Formerly PhysLean & Lean-QuantumInfo.",
   url: "https://physlib.io",
-  github: "https://github.com/lean-phys-community/PhysLean",
-  zulip: "https://leanprover.zulipchat.com/#narrow/channel/479953-PhysLean",
+  github: "https://github.com/leanprover-community/physlib",
+  zulip: "https://leanprover.zulipchat.com/#narrow/channel/479953-physlib",
   search: "https://physlibsearch.net",
-  notes: "https://notes.physlean.com",
   docs: "/docs/index.html",
 };
 
@@ -54,7 +53,6 @@ export const navSections: NavSection[] = [
     items: [
       { label: "Dependency graphs", href: "/dependencies" },
       { label: "Search Physlib", href: site.search, external: true },
-      { label: "Curated notes", href: site.notes, external: true },
     ],
   },
   {

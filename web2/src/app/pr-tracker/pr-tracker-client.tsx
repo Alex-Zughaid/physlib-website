@@ -43,7 +43,7 @@ async function fetchAllPRs(): Promise<PR[]> {
   let page = 1;
   while (true) {
     const res = await fetch(
-      `https://api.github.com/repos/HEPLean/PhysLean/pulls?state=open&per_page=100&page=${page}`,
+      `https://api.github.com/repos/leanprover-community/physlib/pulls?state=open&per_page=100&page=${page}`,
     );
     const data = await res.json();
     if (!Array.isArray(data) || data.length === 0) break;

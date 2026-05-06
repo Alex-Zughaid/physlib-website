@@ -22,10 +22,8 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-200 ${
-          isHome
-            ? "bg-transparent"
-            : "bg-background/90 backdrop-blur-md border-b border-border"
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-200 bg-background border-b border-border ${
+          isHome ? "border-transparent" : "border-border"
         }`}
       >
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5 sm:px-8">

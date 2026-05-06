@@ -33,12 +33,6 @@ const steps: Step[] = [
     linkLabel: "See Physlib Zulip",
   },
   {
-    title: "Read Through Curated Notes",
-    body: "You can contribute by reading through the curated notes and suggesting improvements or corrections to names, doc-strings or Lean proofs. Any suggestion here is welcome!",
-    href: site.notes,
-    linkLabel: "See Curated Notes",
-  },
-  {
     title: "Help with Issues",
     body: "You can contribute by helping with open issues. These range from suggested formalizations, to infrastructure changes needed, to Lean meta programming tasks.",
     href: `${site.github}/issues`,
@@ -61,7 +55,7 @@ const steps: Step[] = [
   {
     title: "Start a Mini-Project",
     body: "There is a list of mini-projects on the Lean Zulip. If you want to get your teeth really stuck into formalizing physics, these are a great place for ideas.",
-    href: "https://leanprover.zulipchat.com/#narrow/channel/479953-PhysLean/topic/Mini.20projects",
+    href: "https://leanprover.zulipchat.com/#narrow/channel/479953-physlib/topic/Mini.20projects",
     linkLabel: "See Mini Projects",
   },
 ];

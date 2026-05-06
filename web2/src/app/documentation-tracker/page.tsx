@@ -56,7 +56,7 @@ const docSteps = [
   {
     title: "Phase 1: Get the Code",
     items: [
-      'Fork the <a href="https://github.com/lean-phys-community/PhysLean" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">PhysLean GitHub repository</a> (copy the master branch only).',
+      'Fork the <a href="https://github.com/leanprover-community/physlib" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">physlib GitHub repository</a> (copy the master branch only).',
       "Clone your forked repository to your local machine. (Optional — you can also edit directly on GitHub.)",
     ],
   },
@@ -64,7 +64,7 @@ const docSteps = [
     title: "Phase 2: Choose a File to Document",
     items: [
       "Use the graph above to identify an undocumented file (a red node) where you think you could help.",
-      "In your local copy of PhysLean, open the file <code class='font-mono text-xs'>./scripts/MetaPrograms/module_doc_no_lint.txt</code>.",
+      "In your local copy of physlib, open the file <code class='font-mono text-xs'>./scripts/MetaPrograms/module_doc_no_lint.txt</code>.",
       "Remove the line corresponding to the file you want to document.",
       "Navigate to the file you want to document.",
     ],
@@ -85,7 +85,7 @@ const docSteps = [
     title: "Phase 4: Submit Your Changes",
     items: [
       "Commit your changes to your forked repository.",
-      "Create a pull request to the main PhysLean repository for review.",
+      "Create a pull request to the main physlib repository for review.",
     ],
   },
 ];

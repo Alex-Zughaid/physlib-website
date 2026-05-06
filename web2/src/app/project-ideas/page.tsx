@@ -95,12 +95,12 @@ const projects: Project[] = [
     body: "Within Physlib there are currently some informal results related to the FLRW metric. The aim of this project would be to formalize those results into Lean and expand upon them.",
     links: [
       {
-        label: "PhysLean file",
-        href: "https://github.com/lean-phys-community/PhysLean/blob/master/PhysLean/Cosmology/FLRW/Basic.lean",
+        label: "physlib file",
+        href: "https://github.com/leanprover-community/physlib/blob/master/PhysLean/Cosmology/FLRW/Basic.lean",
       },
       {
         label: "Zulip discussion",
-        href: "https://leanprover.zulipchat.com/#narrow/channel/479953-PhysLean/topic/Cosmology.20Project.20and.20dependencies/with/512468525",
+        href: "https://leanprover.zulipchat.com/#narrow/channel/479953-physlib/topic/Cosmology.20Project.20and.20dependencies/with/512468525",
       },
     ],
   },
@@ -144,7 +144,7 @@ const projects: Project[] = [
       },
       {
         label: "Zulip discussion",
-        href: "https://leanprover.zulipchat.com/#narrow/channel/479953-PhysLean/topic/QM.20particle.20on.20a.20ring/with/523260615",
+        href: "https://leanprover.zulipchat.com/#narrow/channel/479953-physlib/topic/QM.20particle.20on.20a.20ring/with/523260615",
       },
     ],
   },

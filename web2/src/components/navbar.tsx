@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { site } from "@/lib/site";
+import { site, navSections } from "@/lib/site";
 import { ThemeToggle } from "./theme-toggle";
 
 const links = [
@@ -100,26 +100,46 @@ export function Navbar() {
 
       {/* Mobile fullscreen */}
       {open && (
-        <div className="fixed inset-0 z-40 flex flex-col bg-background pt-14 md:hidden">
+        <div className="fixed inset-0 z-40 flex flex-col bg-background pt-14 md:hidden overflow-y-auto">
           <nav className="flex flex-col px-5 py-6 border-t border-border">
-            {links.map((item) => {
-              const active =
-                item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={`py-3 text-base border-b border-border transition-colors ${
-                    active ? "text-foreground" : "text-muted hover:text-foreground"
-                  }`}
-                  style={{ letterSpacing: "-0.01em" }}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-            <div className="mt-6 flex flex-col gap-3">
+            {navSections.map((section) => (
+              <div key={section.label} className="mb-8 last:mb-0">
+                <p className="mb-3 px-2 text-[10px] font-bold uppercase tracking-widest text-muted/60">
+                  {section.label}
+                </p>
+                <ul className="flex flex-col gap-1">
+                  {section.items.map((item) => {
+                    const active =
+                      item.href === "/"
+                        ? pathname === "/"
+                        : pathname.startsWith(item.href);
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={() => setOpen(false)}
+                          className={`flex items-center justify-between rounded-lg px-2 py-2 text-base transition-colors ${
+                            active
+                              ? "text-accent font-medium bg-accent/8"
+                              : "text-muted hover:text-foreground"
+                          }`}
+                        >
+                          <span className="flex items-center">
+                            {active && (
+                              <span className="mr-3 size-1.5 rounded-full bg-accent flex-shrink-0" />
+                            )}
+                            {item.label}
+                          </span>
+                          {item.external && <span className="opacity-40 text-xs">↗</span>}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+
+            <div className="mt-4 pt-8 border-t border-border flex flex-col gap-3">
               <a
                 href={site.search}
                 target="_blank"

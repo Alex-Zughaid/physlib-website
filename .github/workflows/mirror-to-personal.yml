@@ -17,6 +17,7 @@ jobs:
         env:
           MIRROR_PAT: ${{ secrets.MIRROR_PAT }}
         run: |
+          git config --unset-all http.https://github.com/.extraheader || true
           git config --global credential.helper store
           echo "https://x-access-token:${MIRROR_PAT}@github.com" > ~/.git-credentials
           git remote add mirror https://github.com/Gabrielebattimelli/Physlib-Website.git

@@ -1,6 +1,6 @@
 on:
     schedule:
-        - cron: '0 2/18 * * *'  # Run every 8 hours
+        - cron: '0 2 */4 * *'  # Run every 4 days (~7.75 runs/month, stays within 3000 min budget)
     workflow_dispatch:       # Allows manual triggering from the GitHub Actions tab
 
   

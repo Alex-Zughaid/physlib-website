@@ -13,6 +13,7 @@ permissions:
   
 jobs:
   build_project:
+      if: github.repository == 'kernel-science/physlib-website'
       runs-on: ubuntu-latest
       name: Build project
       steps:

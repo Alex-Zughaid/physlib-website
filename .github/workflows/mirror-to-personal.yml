@@ -14,7 +14,11 @@ jobs:
           fetch-depth: 0
 
       - name: Push to personal mirror
+        env:
+          MIRROR_PAT: ${{ secrets.MIRROR_PAT }}
         run: |
-          git remote add mirror https://x-access-token:${{ secrets.MIRROR_PAT }}@github.com/Gabrielebattimelli/Physlib-Website.git
+          git config --global credential.helper store
+          echo "https://x-access-token:${MIRROR_PAT}@github.com" > ~/.git-credentials
+          git remote add mirror https://github.com/Gabrielebattimelli/Physlib-Website.git
           git push mirror --all
           git push mirror --tags

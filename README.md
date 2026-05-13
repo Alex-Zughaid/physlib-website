@@ -4,9 +4,6 @@ This repository hosts the website for Physlib.
 It is currently under development. 
 
 
-The Physlib website is made using [Jekyll](https://jekyllrb.com) and is generated via the workflow
-`./.github/docs.yml`.
-
 ## Hosting the website locally
 
 The installation instructions for jekyll can be found [here](https://jekyllrb.com/docs/installation/#requirements).

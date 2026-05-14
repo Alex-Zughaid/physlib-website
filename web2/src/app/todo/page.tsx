@@ -54,4 +54,8 @@ const legend = [
     label: "TODO Item",
     className: "bg-teal-500/10 text-teal-700 border-teal-500/20 dark:text-teal-400",
   },
+  {
+    label: "GitHub Issue",
+    className: "bg-green-500/10 text-green-700 border-green-500/20 dark:text-green-400",
+  },
 ];

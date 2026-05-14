@@ -67,6 +67,13 @@ function itemTypeLabel(
         "bg-purple-500/10 text-purple-700 border-purple-500/20 dark:text-purple-400",
       tagText: `[sorryful result (${item.tag}): ${item.name}](https://physlib.io/todo#${item.tag})`,
     };
+  if (item.isGitHubIssue)
+    return {
+      label: "GitHub Issue",
+      className:
+        "bg-green-500/10 text-green-700 border-green-500/20 dark:text-green-400",
+      tagText: `[GitHub Issue: ${item.name}](${item.githubLink})`,
+    };
   return {
     label: "TODO Item",
     className:

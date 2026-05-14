@@ -54,6 +54,7 @@ export type TodoItem = {
   isInformalLemma: boolean;
   isSemiFormalResult: boolean;
   isSorryfulResult: boolean;
+  isGitHubIssue?: boolean;
   category: string;
   name: string;
   tag: string;

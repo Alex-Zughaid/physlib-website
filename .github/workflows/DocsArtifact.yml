@@ -48,7 +48,44 @@ jobs:
           
         - name: make TODO list
           run : lake exe TODO_to_yml mkFile
-  
+
+        - name: Fetch GitHub issues into TODO list
+          run: |
+            curl -sf \
+              "https://api.github.com/repos/leanprover-community/physlib/issues?labels=website-todo&state=open&per_page=100" \
+              -o /tmp/gh_issues.json || { echo "Failed to fetch GitHub issues, skipping."; exit 0; }
+            python3 - /tmp/gh_issues.json docs/_data/TODO.yml << 'PYEOF'
+            import json, sys, yaml
+            issues_path, todo_path = sys.argv[1], sys.argv[2]
+            with open(issues_path) as f:
+                issues = [i for i in json.load(f) if "pull_request" not in i]
+            if not issues:
+                print("No GitHub issues found, skipping.", file=sys.stderr)
+                sys.exit(0)
+            with open(todo_path) as f:
+                data = yaml.safe_load(f)
+            if not any(c["name"] == "GitHub Issues" for c in data["Category"]):
+                data["Category"].append({"name": "GitHub Issues", "num": 0, "emoji": "📋"})
+            for issue in issues:
+                data["TODOItem"].append({
+                    "file": "",
+                    "githubLink": issue["html_url"],
+                    "line": 0,
+                    "isInformalDef": False,
+                    "isInformalLemma": False,
+                    "isSemiFormalResult": False,
+                    "isSorryfulResult": False,
+                    "isGitHubIssue": True,
+                    "category": "GitHub Issues",
+                    "name": issue["title"],
+                    "tag": f"GH-{issue['number']}",
+                    "content": (issue.get("body") or "").strip(),
+                })
+            with open(todo_path, "w") as f:
+                yaml.dump(data, f, allow_unicode=True, sort_keys=False, default_flow_style=False)
+            print(f"Added {len(issues)} GitHub issue(s) to TODO list.", file=sys.stderr)
+            PYEOF
+
         - name: make list of informal proofs and lemmas
           run : lake exe informal mkFile mkDot mkHTML
   

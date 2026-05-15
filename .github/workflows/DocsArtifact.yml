@@ -52,7 +52,7 @@ jobs:
         - name: Fetch GitHub issues into TODO list
           run: |
             curl -sf \
-              "https://api.github.com/repos/leanprover-community/physlib/issues?state=open&per_page=100" \
+              "https://api.github.com/repos/leanprover-community/physlib/issues?state=open&per_page=100&labels=TODO" \
               -o /tmp/gh_issues.json || { echo "Failed to fetch GitHub issues, skipping."; exit 0; }
             python3 - /tmp/gh_issues.json docs/_data/TODO.yml << 'PYEOF'
             import json, sys, yaml

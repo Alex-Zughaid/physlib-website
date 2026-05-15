@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { TodoData, TodoItem } from "@/lib/yaml";
 
 type FilterType =
@@ -118,9 +120,17 @@ function TodoItemCard({ item }: { item: TodoItem }) {
         <span className="text-sm font-medium">{item.name}</span>
       </div>
       {item.content && (
-        <p className="text-sm text-foreground/80 leading-relaxed">
-          {item.content.trim()}
-        </p>
+        item.isGitHubIssue ? (
+          <div className="text-sm text-foreground/80 leading-relaxed prose-sm prose-physlib max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {item.content.trim()}
+            </ReactMarkdown>
+          </div>
+        ) : (
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {item.content.trim()}
+          </p>
+        )
       )}
       <div className="flex flex-wrap gap-2 mt-1">
         <a

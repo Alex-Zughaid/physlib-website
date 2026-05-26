@@ -1,0 +1,33 @@
+# AI training and data-harvesting bots — disallow entirely
+User-agent: CCBot
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: AmazonBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /docs/
+
+User-agent: SemrushBot
+Disallow: /docs/
+
+# All other crawlers — allow main site, block auto-generated docs
+User-agent: *
+Crawl-delay: 10
+Disallow: /docs/
+Disallow: /api/

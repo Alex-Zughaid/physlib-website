@@ -64,6 +64,7 @@ export type TodoItem = {
 export type TodoData = {
   Category: TodoCategory[];
   TODOItem: TodoItem[];
+  generatedAt?: string;
 };
 
 export async function getTodo(): Promise<TodoData> {

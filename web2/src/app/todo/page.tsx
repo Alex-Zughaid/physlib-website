@@ -10,11 +10,22 @@ export const metadata: Metadata = {
 
 export default async function TodoPage() {
   const data = await getTodo();
+  const lastUpdated = data.generatedAt
+    ? new Intl.DateTimeFormat("en-US", {
+        dateStyle: "medium",
+        timeStyle: "short",
+        timeZone: "UTC",
+      }).format(new Date(data.generatedAt))
+    : null;
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 md:py-14">
       <h1 className="text-4xl font-bold tracking-tight mb-2">TODO List</h1>
-      <p className="text-muted mb-6">
+      <p className="text-muted mb-1">
         This TODO list is automatically created from the Lean files.
+      </p>
+      <p className="text-xs text-muted mb-6">
+        {lastUpdated ? `Last updated: ${lastUpdated} UTC` : "Last updated: unknown"}
       </p>
 
       <div className="flex flex-wrap gap-2 mb-8">

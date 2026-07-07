@@ -41,7 +41,7 @@ jobs:
           run: lake -Kenv=dev exe cache get || true
   
         - name: Build project
-          run: lake -Kenv=dev build
+          run: lake -Kenv=dev build Physlib QuantumInfo PhyslibAlpha
         
         - name: Ensure docs data directory exists
           run: mkdir -p docs/_data

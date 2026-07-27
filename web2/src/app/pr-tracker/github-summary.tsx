@@ -43,12 +43,10 @@ export async function GithubSummary() {
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 mb-5">
-        <Stat label="Unreviewed PRs" count={report.unreviewedPRs.length} />
-        <Stat label="Busy reviewers" count={report.busy.length} />
-        <Stat label="Moderate" count={report.moderate.length} />
-        <Stat label="Opened (24h)" count={report.openedRecently.length} />
-        <Stat label="Merged (24h)" count={report.mergedRecently.length} />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 mb-5">
+        <Stat label="In need of reviewer" count={report.unreviewedPRs.length} />
+        <Stat label="Opened (Last 24h)" count={report.openedRecently.length} />
+        <Stat label="Merged (Last 24h)" count={report.mergedRecently.length} />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">

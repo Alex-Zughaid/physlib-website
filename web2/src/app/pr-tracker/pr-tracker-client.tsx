@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { site } from "@/lib/site";
 
 type Label = { name: string; color: string };
 
@@ -39,19 +40,12 @@ function contrastColor(hex: string) {
 }
 
 async function fetchAllPRs(): Promise<PR[]> {
-  const all: PR[] = [];
-  let page = 1;
-  while (true) {
-    const res = await fetch(
-      `https://api.github.com/repos/leanprover-community/physlib/pulls?state=open&per_page=100&page=${page}`,
-    );
-    const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) break;
-    all.push(...data);
-    if (data.length < 100) break;
-    page++;
-  }
-  return all;
+  // Reuses the same computation the Zulip "/reviews" bot command uses,
+  // rather than a separate direct GitHub call - one shared, authenticated,
+  // cached data source instead of two independent fetches.
+  const res = await fetch(site.reportApi);
+  const data = await res.json();
+  return data.openPRs as PR[];
 }
 
 const filterLabels: { key: Category | "all"; label: string; dot: string }[] = [

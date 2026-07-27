@@ -43,10 +43,14 @@ export async function GithubSummary() {
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 mb-5">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-5">
         <Stat label="In need of reviewer" count={report.unreviewedPRs.length} />
         <Stat label="Opened (Last 24h)" count={report.openedRecently.length} />
         <Stat label="Merged (Last 24h)" count={report.mergedRecently.length} />
+        <NetTrend
+          opened={report.openedRecently.length}
+          merged={report.mergedRecently.length}
+        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -86,6 +90,26 @@ function Stat({ label, count }: { label: string; count: number }) {
     <div className="rounded-lg border border-border px-3 py-3 text-center">
       <div className="text-xl font-bold">{count}</div>
       <div className="text-[11px] text-muted mt-0.5">{label}</div>
+    </div>
+  );
+}
+
+// Approximates whether the open-PR backlog is growing or shrinking, using
+// data already in the report (opened vs merged in the last 24h) rather than
+// tracking exact historical snapshots of the unreviewed-PR count.
+function NetTrend({ opened, merged }: { opened: number; merged: number }) {
+  const net = opened - merged;
+  const isFlat = net === 0;
+  const isGrowing = net > 0;
+  const color = isFlat ? "text-muted" : isGrowing ? "text-danger" : "text-success";
+  const arrow = isFlat ? "→" : isGrowing ? "▲" : "▼";
+
+  return (
+    <div className="rounded-lg border border-border px-3 py-3 text-center">
+      <div className={`text-xl font-bold ${color}`}>
+        {arrow} {isFlat ? "0" : `${isGrowing ? "+" : ""}${net}`}
+      </div>
+      <div className="text-[11px] text-muted mt-0.5">Net (24h)</div>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 This repository hosts the website for Physlib. 
 It is currently under development. 
 
+The below is out of date. 
 
 ## Hosting the website locally
 

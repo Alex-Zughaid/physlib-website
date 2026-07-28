@@ -20,8 +20,8 @@ export default function GhGuidePage() {
         Contributing via GitHub
       </h1>
       <p
-        className="text-lg text-muted max-w-2xl mb-12 leading-snug"
-        style={{ letterSpacing: "-0.01em", lineHeight: 1.4 }}
+        className="text-lg max-w-2xl mb-12 leading-snug"
+        style={{ letterSpacing: "-0.01em", lineHeight: 1.4, color: "color-mix(in srgb, var(--foreground) 80%, var(--accent))" }}
       >
         A step-by-step guide to contributing to Physlib via GitHub, following our best practice guidlines
       </p>
@@ -35,8 +35,8 @@ export default function GhGuidePage() {
           1. Open a GitHub Issue
         </h2>
         <p
-          className="text-sm text-muted mb-6 leading-relaxed"
-          style={{ letterSpacing: "-0.01em" }}
+          className="text-sm mb-6 leading-relaxed"
+          style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}
         >
           Before starting any work, open an issue on the Physlib repository to
           describe the problem you are encountering or the feature you want to
@@ -81,8 +81,8 @@ export default function GhGuidePage() {
           2. Work on the Problem
         </h2>
         <p
-          className="text-sm text-muted mb-4 leading-relaxed"
-          style={{ letterSpacing: "-0.01em" }}
+          className="text-sm mb-4 leading-relaxed"
+          style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}
         >
           Before writing any Lean, please read the{" "}
           <a href="/getting-started" className="text-accent hover:underline underline-offset-2">
@@ -100,7 +100,7 @@ export default function GhGuidePage() {
         >
           3. Make a Pull Request
         </h2>
-        <p className="text-sm text-muted mb-8 leading-relaxed" style={{ letterSpacing: "-0.01em" }}>
+        <p className="text-sm mb-8 leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
           Small pull-requests are better than large ones — even if it&apos;s just a single result.
           Follow the PR template provided by GitHub when opening your PR.
         </p>
@@ -147,6 +147,58 @@ export default function GhGuidePage() {
             </Card.Content>
           </Card>
         </div>
+
+        <div className="mt-8">
+          <h3
+            className="text-lg font-medium text-foreground mb-3"
+            style={{ letterSpacing: "-0.03em" }}
+          >
+            Adding Labels
+          </h3>
+          <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+            When opening a pull request, labels help the mainainers manage the review process. Please add comments so the bot can add labels for you. eg. commenting &quot;awaiting-author&quot; will add the{" "}
+            <span
+              className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
+              style={{ background: "#f5c6cb", color: "#7d1a24", border: "1px solid #e8a0a8" }}
+            >
+              awaiting author
+            </span>{" "}
+            label
+          </p>
+        </div>
+      </section>
+
+      <section className="mb-12">
+        <h2
+          className="text-2xl font-medium text-foreground mb-4"
+          style={{ letterSpacing: "-0.035em" }}
+        >
+          4. Managing the PR
+        </h2>
+        <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+          After opening a PR, the maintainers will review the changes and provide feedback. Feel free to begin work on a separate PR in the meantime but be prepared to make changes to this one if required.
+        </p>
+      </section>
+
+      <section className="mb-12">
+        <h2
+          className="text-2xl font-medium text-foreground mb-4"
+          style={{ letterSpacing: "-0.035em" }}
+        >
+          5. Merging the PR
+        </h2>
+        <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+         Once the reviewer is happy with the changes, they will merge the PR into the main branch. PhysLib uses a{" "}
+            <a
+              href="https://github.com/leanprover-community/physlib/queue/main"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline underline-offset-2"
+            >
+              merge queue
+            </a>{" "}
+            to ensure that consecutive changes do not produce unexpected errors. This may result in your PR being rejected with errors you have not seen before.
+        </p>
       </section>
 
     </div>

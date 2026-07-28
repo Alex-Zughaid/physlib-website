@@ -13,6 +13,10 @@ type Report = {
   unreviewedPRs: UnreviewedPR[];
   mergedRecently: RecentPR[];
   openedRecently: RecentPR[];
+  mergedLast7d: RecentPR[];
+  openedLast7d: RecentPR[];
+  mergedLast30d: RecentPR[];
+  openedLast30d: RecentPR[];
 };
 
 async function getReport(): Promise<Report | null> {
@@ -35,27 +39,21 @@ export async function GithubSummary() {
     { label: "Quiet", dot: "bg-accent", entries: report.quiet },
   ];
 
+  const windows = [
+    { label: "Last 24h", opened: report.openedRecently.length, merged: report.mergedRecently.length },
+    { label: "Last 7 days", opened: report.openedLast7d.length, merged: report.mergedLast7d.length },
+    { label: "Last 30 days", opened: report.openedLast30d.length, merged: report.mergedLast30d.length },
+  ];
+
   return (
-    <div className="mb-8 rounded-xl border border-border bg-surface p-5">
-      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-        <h2 className="text-sm font-semibold text-foreground">
-          Current reviewer load
-        </h2>
-      </div>
+    <div className="mb-8">
+      <h2 className="text-xl font-semibold mb-3">Current reviewer load</h2>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-5">
-        <Stat label="In need of reviewer" count={report.unreviewedPRs.length} />
-        <Stat label="Opened (Last 24h)" count={report.openedRecently.length} />
-        <Stat label="Merged (Last 24h)" count={report.mergedRecently.length} />
-        <NetTrend
-          opened={report.openedRecently.length}
-          merged={report.mergedRecently.length}
-        />
-      </div>
+        <Stat label="In need of reviewer" count={report.unreviewedPRs.length} color="border-l-danger" />
 
-      <div className="grid gap-4 sm:grid-cols-3">
         {groups.map((g) => (
-          <div key={g.label}>
+          <div key={g.label} className="rounded-lg border border-border bg-surface px-4 py-4">
             <div className="flex items-center gap-2 mb-2 text-xs font-medium text-muted">
               <span className={`size-2 rounded-full ${g.dot}`} />
               {g.label} ({g.entries.length})
@@ -81,22 +79,50 @@ export async function GithubSummary() {
           </div>
         ))}
       </div>
+
+      <div className="rounded-lg border border-border overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-surface-secondary text-muted text-xs">
+              <th className="px-3 py-2 text-left font-medium">Time frame</th>
+              <th className="px-3 py-2 text-right font-medium">PRs Opened</th>
+              <th className="px-3 py-2 text-right font-medium">PRs Merged</th>
+              <th className="px-3 py-2 text-right font-medium">Net</th>
+            </tr>
+          </thead>
+          <tbody>
+            {windows.map((w) => (
+              <tr key={w.label} className="border-t border-border">
+                <td className="px-3 py-2">{w.label}</td>
+                <td className="px-3 py-2 text-right">{w.opened}</td>
+                <td className="px-3 py-2 text-right">{w.merged}</td>
+                <td className="px-3 py-2 text-right font-medium">
+                  <NetTrend opened={w.opened} merged={w.merged} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
-function Stat({ label, count }: { label: string; count: number }) {
+// Matches the stat tiles in pr-tracker-client.tsx (Needs Review/Awaiting
+// Author/Draft/Total Open) so this reads as one consistent row of stats
+// rather than a visually distinct component.
+function Stat({ label, count, color }: { label: string; count: number; color: string }) {
   return (
-    <div className="rounded-lg border border-border px-3 py-3 text-center">
-      <div className="text-xl font-bold">{count}</div>
-      <div className="text-[11px] text-muted mt-0.5">{label}</div>
+    <div className={`rounded-lg border border-border bg-surface px-4 py-4 border-l-4 ${color} text-center`}>
+      <div className="text-2xl font-bold">{count}</div>
+      <div className="text-xs text-muted mt-1">{label}</div>
     </div>
   );
 }
 
-// Approximates whether the open-PR backlog is growing or shrinking, using
-// data already in the report (opened vs merged in the last 24h) rather than
-// tracking exact historical snapshots of the unreviewed-PR count.
+// Approximates whether the open-PR backlog is growing or shrinking over a
+// window, using data already in the report (opened vs merged counts) rather
+// than tracking exact historical snapshots of the unreviewed-PR count.
 function NetTrend({ opened, merged }: { opened: number; merged: number }) {
   const net = opened - merged;
   const isFlat = net === 0;
@@ -105,11 +131,8 @@ function NetTrend({ opened, merged }: { opened: number; merged: number }) {
   const arrow = isFlat ? "→" : isGrowing ? "▲" : "▼";
 
   return (
-    <div className="rounded-lg border border-border px-3 py-3 text-center">
-      <div className={`text-xl font-bold ${color}`}>
-        {arrow} {isFlat ? "0" : `${isGrowing ? "+" : ""}${net}`}
-      </div>
-      <div className="text-[11px] text-muted mt-0.5">Net (24h)</div>
-    </div>
+    <span className={color}>
+      {arrow} {isFlat ? "0" : `${isGrowing ? "+" : ""}${net}`}
+    </span>
   );
 }

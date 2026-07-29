@@ -40,9 +40,17 @@ export default function GhGuidePage() {
         >
           Before starting any work, open an issue on the Physlib repository to
           describe the problem you are encountering or the feature you want to
-          add. This lets maintainers and other contributors weigh in early,
-          avoids duplicate work, and gives your pull request a clear reference
-          point.
+          add. This makes maintainers aware of the work you plan on doing and helps with 
+          tracking the project. If you want to discuss an idea before opening an issue, the{" "}
+          <a
+            href="https://leanprover.zulipchat.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:underline underline-offset-2"
+          >
+            Lean Zulip
+          </a>{" "}
+           is the place to ask for advice.
         </p>
         <Card variant="default">
           <Card.Header>
@@ -90,6 +98,15 @@ export default function GhGuidePage() {
           </a>{" "}
           guide for how to install Physlib and write results in Lean according to our code quality standards.
         </p>
+        <p
+          className="text-sm mt-3 leading-relaxed"
+          style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}
+        >
+          Always create a new branch from the latest <code className="font-mono text-xs">master</code>{" "} branch before starting work.
+          This ensures that your changes are based on the most recent version of the codebase and reduces the likelihood of merge conflicts.
+          We recommend you use a git GUI if you are not familiar with the command line.
+          
+        </p>
       </section>
 
       {/* Step 3 — Pull Request */}
@@ -114,8 +131,12 @@ export default function GhGuidePage() {
               <ol className="list-decimal ml-5 space-y-1 text-sm text-foreground/90">
                 <li>Fork the Physlib repository to your GitHub account.</li>
                 <li>Clone your forked repository to your local machine.</li>
-                <li>Make your changes on your local version.</li>
-                <li>Push your changes to your forked repository.</li>
+                <li>
+                  Add the original repo as <code className="font-mono text-xs">upstream</code>:{" "}
+                  <code className="font-mono text-xs">git remote add upstream https://github.com/leanprover-community/physlib.git</code>
+                </li>
+                <li>Make your changes on a new branch (<code className="font-mono text-xs">git switch -c my-branch</code>).</li>
+                <li>Push your branch to your fork.</li>
                 <li>
                   Open a pull request from your forked version to the main Physlib
                   repository.
@@ -178,6 +199,23 @@ export default function GhGuidePage() {
         <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
           After opening a PR, the maintainers will review the changes and provide feedback. Feel free to begin work on a separate PR in the meantime but be prepared to make changes to this one if required.
         </p>
+        <p className="text-sm mt-4 leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+          If you want a reviewer to be able to push fixes directly to your branch, you can grant them
+          collaborator access via your fork&apos;s Settings → Collaborators. Once they accept, they
+          can push to your PR branch directly.
+        </p>
+        <p className="text-sm mt-4 leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+          If you get stuck at any point, the{" "}
+          <a
+            href="https://leanprover.zulipchat.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:underline underline-offset-2"
+          >
+            Lean Zulip
+          </a>{" "}
+          is full of people who are happy to give advice.
+        </p>
       </section>
 
       <section className="mb-12">
@@ -207,7 +245,7 @@ export default function GhGuidePage() {
 
 const issueChecklist = [
   "A clear title summarising the problem or feature.",
-  "A description of the current behaviour (for bugs) or the motivation (for features).",
-  "Any relevant links — existing results, Mathlib analogues, or Zulip discussions.",
-  "The physics or Lean context needed for a reviewer to understand the scope.",
+  "Explain the motivation for the feature.",
+  "Any relevant links.",
+  "A summary of the incorrect code (For bugs).",
 ];

@@ -15,7 +15,13 @@ type PR = {
   labels: Label[];
 };
 
-type Category = "review" | "awaiting" | "draft";
+// "in-review" (has a reviewer already assigned) isn't a filter button below -
+// it only shows up under "All" - but it has to exist as a distinct value so
+// "review" can mean exactly what the Worker's unreviewedPRs means, rather
+// than "anything left over after draft/awaiting", which is what caused
+// "Needs Action" and "no reviewer assigned" to silently mean different
+// things before.
+type Category = "review" | "awaiting" | "draft" | "in-review";
 
 type SortKey = "title" | "author" | "age" | "labels";
 type SortDir = "asc" | "desc";
@@ -26,10 +32,15 @@ function daysSince(dateStr: string) {
   );
 }
 
-function categorize(pr: PR): Category {
+function categorize(
+  pr: PR,
+  unreviewedNumbers: Set<number>,
+  awaitingNumbers: Set<number>,
+): Category {
   if (pr.draft) return "draft";
-  if (pr.labels.some((l) => l.name === "awaiting-author")) return "awaiting";
-  return "review";
+  if (awaitingNumbers.has(pr.number)) return "awaiting";
+  if (unreviewedNumbers.has(pr.number)) return "review";
+  return "in-review";
 }
 
 function contrastColor(hex: string) {
@@ -39,17 +50,25 @@ function contrastColor(hex: string) {
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? "#000" : "#fff";
 }
 
-async function fetchAllPRs(): Promise<PR[]> {
+type ReportData = {
+  openPRs: PR[];
+  unreviewedPRs: { number: number }[];
+  awaitingAuthorPRs: { number: number }[];
+};
+
+async function fetchReport(): Promise<ReportData> {
   // Reuses the same computation the Zulip "/reviews" bot command uses,
   // rather than a separate direct GitHub call - one shared, authenticated,
-  // cached data source instead of two independent fetches.
+  // cached data source instead of two independent fetches. Also pulls the
+  // unreviewed/awaiting-author PR numbers so categorize() below matches the
+  // bot's definitions exactly, instead of re-deriving a simplified version
+  // from labels alone.
   const res = await fetch(site.reportApi);
-  const data = await res.json();
-  return data.openPRs as PR[];
+  return (await res.json()) as ReportData;
 }
 
 const filterLabels: { key: Category | "all"; label: string; dot: string }[] = [
-  { key: "review", label: "Needs Review", dot: "bg-danger" },
+  { key: "review", label: "Needs Action", dot: "bg-danger" },
   { key: "awaiting", label: "Awaiting Author", dot: "bg-warning" },
   { key: "draft", label: "Draft", dot: "bg-accent" },
   { key: "all", label: "All", dot: "bg-foreground" },
@@ -57,6 +76,8 @@ const filterLabels: { key: Category | "all"; label: string; dot: string }[] = [
 
 export function PRTrackerClient() {
   const [prs, setPrs] = useState<PR[]>([]);
+  const [unreviewedNumbers, setUnreviewedNumbers] = useState<Set<number>>(new Set());
+  const [awaitingNumbers, setAwaitingNumbers] = useState<Set<number>>(new Set());
   const [status, setStatus] = useState<"loading" | "error" | "ok">("loading");
   const [filter, setFilter] = useState<Category | "all">("review");
   const [sort, setSort] = useState<{ key: SortKey; dir: SortDir }>({
@@ -65,18 +86,20 @@ export function PRTrackerClient() {
   });
 
   useEffect(() => {
-    fetchAllPRs()
+    fetchReport()
       .then((data) => {
-        setPrs(data);
+        setPrs(data.openPRs);
+        setUnreviewedNumbers(new Set(data.unreviewedPRs.map((pr) => pr.number)));
+        setAwaitingNumbers(new Set(data.awaitingAuthorPRs.map((pr) => pr.number)));
         setStatus("ok");
       })
       .catch(() => setStatus("error"));
   }, []);
 
   const counts = {
-    review: prs.filter((p) => categorize(p) === "review").length,
-    awaiting: prs.filter((p) => categorize(p) === "awaiting").length,
-    draft: prs.filter((p) => categorize(p) === "draft").length,
+    review: prs.filter((p) => categorize(p, unreviewedNumbers, awaitingNumbers) === "review").length,
+    awaiting: prs.filter((p) => categorize(p, unreviewedNumbers, awaitingNumbers) === "awaiting").length,
+    draft: prs.filter((p) => categorize(p, unreviewedNumbers, awaitingNumbers) === "draft").length,
     total: prs.length,
   };
 
@@ -92,7 +115,7 @@ export function PRTrackerClient() {
   );
 
   const visible = prs
-    .filter((p) => filter === "all" || categorize(p) === filter)
+    .filter((p) => filter === "all" || categorize(p, unreviewedNumbers, awaitingNumbers) === filter)
     .sort((a, b) => {
       const dir = sort.dir === "asc" ? 1 : -1;
       if (sort.key === "title")
@@ -131,7 +154,7 @@ export function PRTrackerClient() {
       {/* Summary cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-6">
         {[
-          { label: "Needs Review", count: counts.review, color: "border-l-danger" },
+          { label: "Needs Action", count: counts.review, color: "border-l-danger" },
           { label: "Awaiting Author", count: counts.awaiting, color: "border-l-warning" },
           { label: "Draft", count: counts.draft, color: "border-l-accent" },
           { label: "Total Open", count: counts.total, color: "border-l-foreground/40" },

@@ -15,13 +15,12 @@ type PR = {
   labels: Label[];
 };
 
-// "in-review" (has a reviewer already assigned) isn't a filter button below -
-// it only shows up under "All" - but it has to exist as a distinct value so
-// "review" can mean exactly what the Worker's unreviewedPRs means, rather
-// than "anything left over after draft/awaiting", which is what caused
-// "Needs Action" and "no reviewer assigned" to silently mean different
-// things before.
-type Category = "review" | "awaiting" | "draft" | "in-review";
+// "review" ("Needs Action") = has an assigned reviewer, not awaiting author,
+// not draft - i.e. a reviewer needs to actually act on it. "no-reviewer" is
+// the separate, narrower case of nobody being assigned yet (matches the
+// Worker's unreviewedPRs exactly) - it isn't a filter button below, only
+// visible via "All" or the "In need of reviewer" stat further down the page.
+type Category = "review" | "awaiting" | "draft" | "no-reviewer";
 
 type SortKey = "title" | "author" | "age" | "labels";
 type SortDir = "asc" | "desc";
@@ -39,8 +38,8 @@ function categorize(
 ): Category {
   if (pr.draft) return "draft";
   if (awaitingNumbers.has(pr.number)) return "awaiting";
-  if (unreviewedNumbers.has(pr.number)) return "review";
-  return "in-review";
+  if (unreviewedNumbers.has(pr.number)) return "no-reviewer";
+  return "review";
 }
 
 function contrastColor(hex: string) {

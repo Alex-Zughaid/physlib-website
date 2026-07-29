@@ -142,6 +142,24 @@ export default function GhGuidePage() {
                   repository.
                 </li>
               </ol>
+              <p
+                className="text-sm mt-4 leading-relaxed"
+                style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}
+              >
+                GitHub usually shows a banner offering to open the PR for you right
+                after you push. If you don&apos;t see it, go to{" "}
+                <a
+                  href="https://github.com/leanprover-community/physlib/compare"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:underline underline-offset-2"
+                >
+                  the compare page
+                </a>{" "}
+                and click &quot;compare across forks&quot;. Select your fork in the
+                &quot;head repository&quot; dropdown, and the branch you want to
+                merge in the &quot;compare&quot; dropdown.
+              </p>
             </Card.Content>
           </Card>
 
@@ -178,14 +196,74 @@ export default function GhGuidePage() {
           </h3>
           <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
             When opening a pull request, labels help the mainainers manage the review process. Please add comments so the bot can add labels for you. eg. commenting &quot;awaiting-author&quot; will add the{" "}
-            <span
-              className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
-              style={{ background: "#f5c6cb", color: "#7d1a24", border: "1px solid #e8a0a8" }}
-            >
-              awaiting author
-            </span>{" "}
-            label
+            <LabelPill name="awaiting-author" />{" "}
+            label.
           </p>
+        </div>
+
+        <div className="mt-8">
+          <h3
+            className="text-lg font-medium text-foreground mb-3"
+            style={{ letterSpacing: "-0.03em" }}
+          >
+            Lifecycle of a PR
+          </h3>
+          <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+            Once a reviewer looks at your PR, they will usually leave comments and
+            add the <LabelPill name="awaiting-author" /> label. Address each
+            comment — ideally with a new commit per point — and click &quot;resolve
+            conversation&quot; once it&apos;s handled. When you&apos;ve addressed
+            everything, let the reviewer know so they can take another look. Once
+            they&apos;re happy, they&apos;ll mark it{" "}
+            <LabelPill name="reviewer-approved" />, which leads to{" "}
+            <LabelPill name="ready-to-merge" /> and the merge queue described below.
+          </p>
+        </div>
+
+        <div className="mt-8">
+          <h3
+            className="text-lg font-medium text-foreground mb-3"
+            style={{ letterSpacing: "-0.03em" }}
+          >
+            Other Labels You Might See
+          </h3>
+          <ul className="space-y-3 text-sm" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+            <li>
+              <LabelPill name="WIP" /> — the PR still needs foundational work
+              (e.g. it contains <code className="font-mono text-xs">sorry</code>) before it&apos;s ready for review. Use it to
+              signal you&apos;re working on something you expect to finish soon.
+            </li>
+            <li>
+              <LabelPill name="help-wanted" /> — directly soliciting contributions
+              on an issue or PR.
+            </li>
+            <li>
+              <LabelPill name="easy" /> — a trivial change (a single lemma, a typo
+              fix, a diff under ~25 lines, no new definitions) that maintainers
+              prioritise reviewing first to keep the queue moving. If you&apos;re
+              unsure whether your PR qualifies, don&apos;t add it.
+            </li>
+            <li>
+              <LabelPill name="blocked-by-PR" /> /{" "}
+              <LabelPill name="blocked-by-mathlib-PR" /> — this PR depends on
+              another PR being merged first. Include the blocking PR&apos;s number
+              in the title or a comment so reviewers know what to check first.
+            </li>
+            <li>
+              <LabelPill name="merge-conflict" /> — your branch has diverged from{" "}
+              <code className="font-mono text-xs">master</code> in a way Git
+              can&apos;t resolve automatically. See GitHub&apos;s{" "}
+              <a
+                href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-on-github"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline underline-offset-2"
+              >
+                guide to resolving merge conflicts
+              </a>{" "}
+              for how to fix it.
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -249,3 +327,36 @@ const issueChecklist = [
   "Any relevant links.",
   "A summary of the incorrect code (For bugs).",
 ];
+
+// Actual colors from github.com/leanprover-community/physlib/labels, so
+// these read as the real labels rather than approximations.
+const labelColors: Record<string, string> = {
+  "awaiting-author": "f96e8f",
+  "reviewer-approved": "71d9a5",
+  "ready-to-merge": "97f144",
+  WIP: "dfeca7",
+  "help-wanted": "008672",
+  easy: "6be25e",
+  "blocked-by-PR": "0c7b31",
+  "blocked-by-mathlib-PR": "c4c38e",
+  "merge-conflict": "4077a0",
+};
+
+function contrastColor(hex: string) {
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? "#000" : "#fff";
+}
+
+function LabelPill({ name }: { name: string }) {
+  const color = labelColors[name];
+  return (
+    <span
+      className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
+      style={{ background: `#${color}`, color: contrastColor(color) }}
+    >
+      {name}
+    </span>
+  );
+}

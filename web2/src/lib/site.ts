@@ -9,7 +9,7 @@ export const site = {
   search: "https://physlibsearch.net",
   docs: "/docs/index.html",
   // Same report the "/reviews" Zulip bot command sends - see
-  // https://github.com/Alex-Zughaid/PhysLibBots (zulip-dm-bots/src/index.js)
+  // https://github.com/Alex-Zughaid/PhyslibBots (zulip-dm-bots/src/index.js)
   reportApi: "https://zulip-dm-relay.alexzughaid.workers.dev/report",
 };
 

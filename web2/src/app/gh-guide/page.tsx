@@ -197,7 +197,15 @@ export default function GhGuidePage() {
           <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
             When opening a pull request, labels help the mainainers manage the review process. Please add comments so the bot can add labels for you. eg. commenting &quot;awaiting-author&quot; will add the{" "}
             <LabelPill name="awaiting-author" />{" "}
-            label.
+            label. You can view the full list of labels{" "}
+            <a
+              href="https://github.com/leanprover-community/physlib/labels"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline underline-offset-2"
+            >
+              here
+            </a>.
           </p>
         </div>
 
@@ -225,7 +233,7 @@ export default function GhGuidePage() {
             className="text-lg font-medium text-foreground mb-3"
             style={{ letterSpacing: "-0.03em" }}
           >
-            Other Labels You Might See
+            Other Common Labels
           </h3>
           <ul className="space-y-3 text-sm" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
             <li>
@@ -304,7 +312,7 @@ export default function GhGuidePage() {
           5. Merging the PR
         </h2>
         <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
-         Once the reviewer is happy with the changes, they will merge the PR into the main branch. PhysLib uses a{" "}
+         Once the reviewer is happy with the changes, they will merge the PR into the main branch. Physlib uses a{" "}
             <a
               href="https://github.com/leanprover-community/physlib/queue/main"
               target="_blank"
@@ -314,6 +322,25 @@ export default function GhGuidePage() {
               merge queue
             </a>{" "}
             to ensure that consecutive changes do not produce unexpected errors. This may result in your PR being rejected with errors you have not seen before.
+        </p>
+      </section>
+
+      {/* Additional Guidance */}
+      <section className="mb-12">
+        <h2
+          className="text-2xl font-medium text-foreground mb-4"
+          style={{ letterSpacing: "-0.035em" }}
+        >
+          Additional Guidance
+        </h2>
+        <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+          Please use your real name in your GitHub account settings and commit author. Physlib uses
+          GitHub account names in its automated documentation generation, so using your real name
+          makes it easier for people to recognise your work.
+        </p>
+        <p className="text-sm mt-4 leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+          If you are contributing to PhyslibAlpha, which sits downstream of Physlib,
+          Lean code quality guidelines are less strict. However, please still follow the GitHub contribution guide.
         </p>
       </section>
 

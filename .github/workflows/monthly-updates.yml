@@ -1,0 +1,126 @@
+name: Generate monthly update
+
+on:
+  schedule:
+    # Runs at 03:15 UTC on the 1st of every month. Uses the UTC clock so the
+    # "previous month" that the script picks matches the calendar month that
+    # just ended.
+    - cron: "15 3 1 * *"
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "Optional YYYY-MM to generate (default: previous month)"
+        required: false
+        type: string
+      backfill:
+        description: "Optional number of previous months to backfill"
+        required: false
+        type: string
+      force:
+        description: "Overwrite existing JSON files"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Two runs committing to the same branch would race on push.
+concurrency:
+  group: monthly-updates
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Tectonic (LaTeX engine)
+        uses: wtfjoke/setup-tectonic@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # The generator reads whole Lean files at both month-boundary commits, so
+      # it needs a clone of physlib. Caching it turns a full clone into a small
+      # incremental fetch on subsequent runs.
+      - name: Cache physlib clone
+        uses: actions/cache@v4
+        with:
+          path: web2/.cache/physlib.git
+          key: physlib-clone-${{ github.run_id }}
+          restore-keys: physlib-clone-
+
+      # Inputs go through env, never string-interpolated into the script: a
+      # `${{ inputs.month }}` spliced straight into `run:` lets a dispatch value
+      # like `2026-01; curl … | sh` execute as shell.
+      - name: Run generator
+        working-directory: web2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MONTH: ${{ inputs.month }}
+          BACKFILL: ${{ inputs.backfill }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          ARGS=()
+          if [ -n "$MONTH" ]; then
+            ARGS+=(--month "$MONTH")
+          fi
+          if [ -n "$BACKFILL" ]; then
+            ARGS+=(--backfill "$BACKFILL")
+          fi
+          if [ "$FORCE" = "true" ]; then
+            ARGS+=(--force)
+          fi
+          node scripts/generate-monthly-updates.js "${ARGS[@]}"
+
+      # Only the JSON and the PDF are published. The .tex intermediate lives in
+      # web2/.monthly-updates-build/ and is gitignored.
+      - name: Commit & push new report(s)
+        id: commit
+        env:
+          MONTH: ${{ inputs.month }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web2/data/monthly-updates web2/public/monthly-updates
+          if git diff --cached --quiet; then
+            echo "No new monthly reports to commit."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          MSG="chore(monthly-updates): auto-generated report"
+          if [ -n "$MONTH" ]; then
+            MSG="$MSG for $MONTH"
+          fi
+          git commit -m "$MSG"
+          # main may have moved while TeX was installing.
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      # The site deploys via Gabrielebattimelli/Physlib-Website (Vercel), which
+      # mirror-to-personal.yml normally keeps in sync on push. That workflow
+      # will NOT fire for the commit above: GitHub deliberately does not trigger
+      # workflows for pushes made with the default GITHUB_TOKEN, to avoid
+      # recursion. Without this step the report lands on main and never reaches
+      # the live site. So mirror it here, using the same secret and target as
+      # mirror-to-personal.yml.
+      - name: Mirror to personal repo (Vercel)
+        if: steps.commit.outputs.committed == 'true'
+        env:
+          MIRROR_PAT: ${{ secrets.MIRROR_PAT }}
+        run: |
+          git config --unset-all http.https://github.com/.extraheader || true
+          git config --global credential.helper store
+          echo "https://x-access-token:${MIRROR_PAT}@github.com" > ~/.git-credentials
+          git remote add mirror https://github.com/Gabrielebattimelli/Physlib-Website.git
+          git push mirror "HEAD:refs/heads/${GITHUB_REF_NAME}"

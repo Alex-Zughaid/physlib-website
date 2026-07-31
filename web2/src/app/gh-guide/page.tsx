@@ -26,58 +26,71 @@ export default function GhGuidePage() {
         A step-by-step guide to contributing to Physlib via GitHub, following our best practice guidlines
       </p>
 
-      {/* Step 1 — Issues */}
+      {/* Step 1 —  Deciding on a Problem to Work On */}
       <section className="mb-12">
         <h2
           className="text-2xl font-medium text-foreground mb-4"
           style={{ letterSpacing: "-0.035em" }}
         >
-          1. Open a GitHub Issue
+          1. Deciding on a Problem to Work On
         </h2>
-        <p
-          className="text-sm mb-6 leading-relaxed"
-          style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}
-        >
-          Before starting any work, open an issue on the Physlib repository to
-          describe the problem you are encountering or the feature you want to
-          add. This makes maintainers aware of the work you plan on doing and helps with 
-          tracking the project. If you want to discuss an idea before opening an issue, the{" "}
-          <a
-            href="https://leanprover.zulipchat.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:underline underline-offset-2"
-          >
-            Lean Zulip
-          </a>{" "}
-           is the place to ask for advice.
-        </p>
-        <Card variant="default">
-          <Card.Header>
-            <Card.Title>What to include in an issue</Card.Title>
-          </Card.Header>
-          <Card.Content className="text-sm text-foreground/90">
-            <ul className="space-y-2 ml-4">
-              {issueChecklist.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="text-accent flex-shrink-0">—</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-4">
-              <a
-                href={`${site.github}/issues/new`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-9 items-center gap-2 rounded px-4 text-sm font-medium transition-opacity hover:opacity-80"
-                style={{ background: "var(--accent)", color: "var(--accent-foreground)", letterSpacing: "-0.01em" }}
-              >
-                Open an Issue ↗
-              </a>
-            </div>
-          </Card.Content>
-        </Card>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Card variant="default">
+            <Card.Header>
+              <Card.Title>Creating a GitHub issue</Card.Title>
+            </Card.Header>
+            <Card.Content className="text-sm text-foreground/90">
+              <p className="mb-4 leading-relaxed" style={{ color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+                Before starting any work, you can open an issue on the Physlib repository to
+                describe the problem you are encountering or the feature you want to
+                add. This makes maintainers aware of the work you plan on doing and helps with
+                tracking the project. 
+              </p>
+              <ul className="space-y-2 ml-4">
+                {issueChecklist.map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="text-accent flex-shrink-0">—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4">
+                <a
+                  href={`${site.github}/issues/new`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-9 items-center gap-2 rounded px-4 text-sm font-medium transition-opacity hover:opacity-80"
+                  style={{ background: "var(--accent)", color: "var(--accent-foreground)", letterSpacing: "-0.01em" }}
+                >
+                  Open an Issue ↗
+                </a>
+              </div>
+            </Card.Content>
+          </Card>
+
+          <Card variant="default">
+            <Card.Header>
+              <Card.Title>Asking the community</Card.Title>
+            </Card.Header>
+            <Card.Content className="text-sm text-foreground/90">
+              <p className="mb-4 leading-relaxed" style={{ color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+              The Physlib community is full of members who can point you in the right direction if you want to discuss an idea before opening an issue.
+              There is a Physlib channel on the Leanprover Zulip where you can post any questions you have. 
+                </p>
+                <div className="mt-4">
+                <a
+                  href="https://leanprover.zulipchat.com/#narrow/channel/479953-Physlib"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-9 items-center gap-2 rounded px-4 text-sm font-medium transition-opacity hover:opacity-80"
+                  style={{ background: "var(--accent)", color: "var(--accent-foreground)", letterSpacing: "-0.01em" }}
+                >
+                  Visit the Physlib Zulip ↗
+                </a>
+              </div>
+            </Card.Content>
+          </Card>
+        </div>
       </section>
 
       {/* Step 2 — Work on it */}
@@ -122,70 +135,37 @@ export default function GhGuidePage() {
           Follow the PR template provided by GitHub when opening your PR.
         </p>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Card variant="default">
-            <Card.Header>
-              <Card.Title>Using Forks</Card.Title>
-            </Card.Header>
-            <Card.Content>
-              <ol className="list-decimal ml-5 space-y-1 text-sm text-foreground/90">
-                <li>Fork the Physlib repository to your GitHub account.</li>
-                <li>Clone your forked repository to your local machine.</li>
-                <li>
-                  Add the original repo as <code className="font-mono text-xs">upstream</code>:{" "}
-                  <code className="font-mono text-xs">git remote add upstream https://github.com/leanprover-community/physlib.git</code>
-                </li>
-                <li>Make your changes on a new branch (<code className="font-mono text-xs">git switch -c my-branch</code>).</li>
-                <li>Push your branch to your fork.</li>
-                <li>
-                  Open a pull request from your forked version to the main Physlib
-                  repository.
-                </li>
-              </ol>
-              <p
-                className="text-sm mt-4 leading-relaxed"
-                style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}
-              >
-                GitHub usually shows a banner offering to open the PR for you right
-                after you push. If you don&apos;t see it, go to{" "}
-                <a
-                  href="https://github.com/leanprover-community/physlib/compare"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-accent hover:underline underline-offset-2"
-                >
-                  the compare page
-                </a>{" "}
-                and click &quot;compare across forks&quot;. Select your fork in the
-                &quot;head repository&quot; dropdown, and the branch you want to
-                merge in the &quot;compare&quot; dropdown.
-              </p>
-            </Card.Content>
-          </Card>
-
-          <Card variant="default">
-            <Card.Header>
-              <Card.Title>Using Branches</Card.Title>
-            </Card.Header>
-            <Card.Content>
-              <ol className="list-decimal ml-5 space-y-1 text-sm text-foreground/90">
-                <li>
-                  Ask Joseph Tooby-Smith to add you as an outside collaborator on
-                  the project.
-                </li>
-                <li>Clone the main GitHub repository.</li>
-                <li>
-                  Make your own branch (e.g.{" "}
-                  <code className="font-mono text-xs">
-                    feat(your-name):updating spacetime
-                  </code>
-                  ).
-                </li>
-                <li>Open a pull request from your branch to the main branch.</li>
-              </ol>
-            </Card.Content>
-          </Card>
-        </div>
+        <ol className="list-decimal ml-5 space-y-2 text-sm text-foreground/90 mb-4">
+          <li>Fork the Physlib repository to your GitHub account.</li>
+          <li>Clone your forked repository to your local machine.</li>
+          <li>
+            Add the original repo as <code className="font-mono text-xs">upstream</code>:{" "}
+            <code className="font-mono text-xs">git remote add upstream https://github.com/leanprover-community/physlib.git</code>
+          </li>
+          <li>Make your changes on a new branch (<code className="font-mono text-xs">git switch -c my-branch</code>).</li>
+          <li>Push your branch to your fork.</li>
+          <li>
+            Open a pull request from your forked version to the main Physlib repository.
+          </li>
+        </ol>
+        <p
+          className="text-sm leading-relaxed"
+          style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}
+        >
+          GitHub usually shows a banner offering to open the PR for you right
+          after you push. If you don&apos;t see it, go to{" "}
+          <a
+            href="https://github.com/leanprover-community/physlib/compare"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:underline underline-offset-2"
+          >
+            the compare page
+          </a>{" "}
+          and click &quot;compare across forks&quot;. Select your fork in the
+          &quot;head repository&quot; dropdown, and the branch you want to
+          merge in the &quot;compare&quot; dropdown.
+        </p>
 
         <div className="mt-8">
           <h3
@@ -205,8 +185,7 @@ export default function GhGuidePage() {
               className="text-accent hover:underline underline-offset-2"
             >
               here
-            </a>.
-          </p>
+            </a>.          </p>
         </div>
 
         <div className="mt-8">
@@ -218,13 +197,11 @@ export default function GhGuidePage() {
           </h3>
           <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
             Once a reviewer looks at your PR, they will usually leave comments and
-            add the <LabelPill name="awaiting-author" /> label. Address each
-            comment — ideally with a new commit per point — and click &quot;resolve
-            conversation&quot; once it&apos;s handled. When you&apos;ve addressed
-            everything, let the reviewer know so they can take another look. Once
+            add the <LabelPill name="awaiting-author" /> label. Once you have responded to the reviewer&apos;s comments and made any required changes,
+            comment <code className="font-mono text-xs">-awaiting-author </code> to remove the label and let them know they should re-review the PR. Once
             they&apos;re happy, they&apos;ll mark it{" "}
-            <LabelPill name="reviewer-approved" />, which leads to{" "}
-            <LabelPill name="ready-to-merge" /> and the merge queue described below.
+            <LabelPill name="reviewer-approved" />. Then a maintainer can look at the PR and add the{" "}
+            <LabelPill name="ready-to-merge" /> label to add your change to the merge queue, where the final quality checks are run.
           </p>
         </div>
 
@@ -259,7 +236,7 @@ export default function GhGuidePage() {
             </li>
             <li>
               <LabelPill name="merge-conflict" /> — your branch has diverged from{" "}
-              <code className="font-mono text-xs">master</code> in a way Git
+              <code className="font-mono text-xs">master </code> in a way Git
               can&apos;t resolve automatically. See GitHub&apos;s{" "}
               <a
                 href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-on-github"

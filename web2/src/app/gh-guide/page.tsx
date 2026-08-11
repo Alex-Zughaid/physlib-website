@@ -250,6 +250,44 @@ export default function GhGuidePage() {
             </li>
           </ul>
         </div>
+
+        <div className="mt-8">
+          <h3
+            className="text-lg font-medium text-foreground mb-3"
+            style={{ letterSpacing: "-0.03em" }}
+          >
+            Stacking Dependent Pull Requests
+          </h3>
+          <p className="text-sm leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+            If your change builds on work in another PR that hasn&apos;t merged yet, you don&apos;t have to wait before starting. GitHub&apos;s{" "}
+            <a
+              href="https://docs.github.com/en/pull-requests/get-started/about-stacked-prs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline underline-offset-2"
+            >
+              stacked pull requests
+            </a>{" "}
+            feature (currently in public preview) lets you open a PR with another PR&apos;s branch as its base instead of{" "}
+            <code className="font-mono text-xs">main</code>, so each dependent layer of a change can be reviewed on its own rather than as one large diff.
+          </p>
+          <p className="text-sm mt-4 leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+            To create one, install the CLI extension with{" "}
+            <code className="font-mono text-xs">gh extension install github/gh-stack</code>, then run{" "}
+            <code className="font-mono text-xs">gh stack init &lt;branch&gt;</code> to adopt a branch that already has an open PR as the bottom of your stack. Branch off it as normal, then run{" "}
+            <code className="font-mono text-xs">gh stack add -Am &quot;message&quot; new-branch</code>{" "}
+            to commit your changes onto a new branch on top. Running{" "}
+            <code className="font-mono text-xs">gh stack submit</code> pushes every branch and opens (or updates) the PRs, linked together as a stack on GitHub. You can achieve the same base-branch chaining by hand from github.com — pick the other PR&apos;s branch instead of{" "}
+            <code className="font-mono text-xs">main</code> when opening yours — the CLI just tracks and automates it.
+          </p>
+          <p className="text-sm mt-4 leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+            Stacked PRs merge from the bottom up. Merging the bottom PR automatically retargets and rebases the rest of the stack onto{" "}
+            <code className="font-mono text-xs">main</code>, and merging the top PR merges the whole stack in one action. One limitation: all branches in a stack must live in the same repository, so if you&apos;re contributing from a fork, the whole stack needs to stay on your fork until the bottom PR is merged upstream.
+          </p>
+          <p className="text-sm mt-4 leading-relaxed" style={{ letterSpacing: "-0.01em", color: "color-mix(in srgb, var(--foreground) 70%, var(--accent))" }}>
+            This is a good alternative to the <LabelPill name="blocked-by-PR" /> label when the dependency is still under review — reviewers can look at each layer independently instead of waiting for the whole thing to land at once.
+          </p>
+        </div>
       </section>
 
       <section className="mb-12">

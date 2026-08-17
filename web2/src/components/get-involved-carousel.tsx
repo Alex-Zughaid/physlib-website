@@ -23,6 +23,7 @@ const cards = [
       "Formalize theorems, definitions, or calculations from physics",
       "Golf existing proofs",
       "Work on the APIs",
+      "Use PhyslibAITools on your computer to generate improvements to exsting code."
     ],
     cta: { label: "Browse issues", href: "https://github.com/leanprover-community/Physlib/issues", external: true },
   },

@@ -1,7 +1,7 @@
 {
   "repo": "leanprover-community/physlib",
   "branch": "master",
-  "generatedAt": "2026-08-31T10:54:44.178Z",
+  "generatedAt": "2026-09-07T09:24:38.207Z",
   "nodes": [
     {
       "path": "Physlib/ClassicalFieldTheory/GaugeTheory",
@@ -35,12 +35,12 @@
         {
           "description": "Gauge invariance of the field strength under abelian U(1) gauge transformations",
           "done": true,
-          "location": "Physlib/Electromagnetism/Kinematics/GaugeTransformation.lean (toFieldStrength_gaugeTransform, fieldStrengthMatrix_gaugeTransform)"
+          "location": "Physlib/Electromagnetism/Kinematics/GaugeTransformation.lean (toFieldStrength_gaugeTransform, toFieldStrength_eval_gaugeTransform)"
         },
         {
           "description": "Pure-gauge (flat) configurations have vanishing curvature, and the bare gradient does not (necessity of the metric contraction)",
           "done": true,
-          "location": "Physlib/Electromagnetism/Kinematics/GaugeTransformation.lean (toFieldStrength_ofGradient, fieldStrengthMatrix_bareGradient_inl_inr, toFieldStrength_bareGradient_ne_zero)"
+          "location": "Physlib/Electromagnetism/Kinematics/GaugeTransformation.lean (toFieldStrength_ofGradient, toFieldStrength_eval_bareGradient_inl_inr, toFieldStrength_bareGradient_ne_zero)"
         },
         {
           "description": "Group structure of gauge transformations: identity shift and composition of successive shifts",
@@ -345,10 +345,10 @@
     {
       "path": "Physlib/ClassicalMechanics/Pendulum/SimplePendulum",
       "title": "Simple pendulum",
-      "overview": "A simple pendulum is a bob on a rigid massless rod of length ℓ, pinned at a pivot and swinging\nin a vertical plane under gravity g. Its configuration is the angle of the rod from the downward\nvertical, taken modulo a full turn, so the configuration space is a circle; the position of the\nbob in the plane is (ℓ sin θ, −ℓ cos θ). The motion is governed by θ̈ + (g/ℓ) sin θ = 0. For\nsmall amplitudes it is harmonic with period 2π√(ℓ/g); for librations (amplitudes below the\ninverted position) the period grows with the amplitude and is given by a complete elliptic\nintegral. This API records the configuration space with its manifold structure and its\nembedding into physical space, together with the lifted Lagrangian and equation of motion,\nthe equivalence of that equation with the vanishing of the variational gradient of the\naction, the conservation of energy, the Hamiltonian formulation with the equivalence of\nthe Newtonian, scalar, Hamiltonian and variational formulations, the equilibria with\nthe separatrix energy and the below/above-threshold energy bounds, the invariance of\nthe lifted dynamics under shifting the angle by whole turns, and the small-angle limit —\nthe linearized dynamics as a harmonic oscillator, its period 2π√(ℓ/g), and the cubic bound\non the linearization error; the classical amplitude-dependent period formula follows in\nlater modules; its identification with the nonlinear return time remains open.",
+      "overview": "A simple pendulum is a bob on a rigid massless rod of length ℓ, pinned at a pivot and swinging\nin a vertical plane under gravity g. Its configuration is the angle of the rod from the downward\nvertical, taken modulo a full turn, so the configuration space is a circle; the position of the\nbob in the plane is (ℓ sin θ, −ℓ cos θ). The motion is governed by θ̈ + (g/ℓ) sin θ = 0. For\nsmall amplitudes it is harmonic with period 2π√(ℓ/g); for librations (amplitudes below the\ninverted position) the period grows with the amplitude and is given by a complete elliptic\nintegral. This API records the configuration space with its manifold structure and its\nembedding into physical space, together with the lifted Lagrangian and equation of motion,\nthe equivalence of that equation with the vanishing of the variational gradient of the\naction, the conservation of energy, the Hamiltonian formulation with the equivalence of\nthe Newtonian, scalar, Hamiltonian and variational formulations, the equilibria with\nthe separatrix energy and the below/above-threshold energy bounds, the invariance of\nthe lifted dynamics under shifting the angle by whole turns,\nthe uniqueness of the solutions with given initial angle and\nangular velocity together with their time-reversal symmetry, and, for any initial data, a\ncurve with that initial data satisfying the equation of motion within ε of the initial\ninstant, and the small-angle limit —\nthe linearized dynamics as a harmonic oscillator, its period 2π√(ℓ/g), and the cubic bound\non the linearization error — and the classical amplitude-dependent period formula\n4√(ℓ/g) K(sin²(θ₀/2)), with its small-angle limit and its monotonicity and bounds in the\namplitude; its identification with the nonlinear return time remains open.",
       "references": [
         "Landau & Lifshitz, Mechanics, 3rd Edition, Chapter 1 (The Equations of motion), Section 5 (The Lagrangian for a system of particles).",
-        "Landau & Lifshitz, Mechanics, 3rd Edition, Chapter 3 (Integration of the equations of motion), Section 11 (Motion in one dimension).",
+        "Landau & Lifshitz, Mechanics, 3rd Edition, Chapter 3 (Integration of the equations of motion), Section 11 (Motion in one dimension), Problem 1 (the period of the pendulum as a complete elliptic integral).",
         "Landau & Lifshitz, Mechanics, 3rd Edition, Chapter 5 (Small oscillations), Section 21 (Free oscillations in one dimension).",
         "Landau & Lifshitz, Mechanics, 3rd Edition, Chapter 7 (The canonical equations), Section 40 (Hamilton's equations)."
       ],
@@ -404,6 +404,16 @@
           "location": "Physlib/ClassicalMechanics/Pendulum/SimplePendulum/LiftInvariance.lean (SimplePendulum.equationOfMotion_add_int_mul_two_pi, SimplePendulum.energy_add_int_mul_two_pi, SimplePendulum.isSolution_add_int_mul_two_pi)"
         },
         {
+          "description": "The API contains the uniqueness of the solutions with given initial angle and angular velocity, and the time-reversal symmetry of the solutions.",
+          "done": true,
+          "location": "Physlib/ClassicalMechanics/Pendulum/SimplePendulum/Solution.lean (SimplePendulum.phaseVectorField, SimplePendulum.equationOfMotion_unique, SimplePendulum.IsSolution.eq_of_initial, SimplePendulum.isSolution_comp_neg, SimplePendulum.releasedFromRest_even)"
+        },
+        {
+          "description": "The API contains, for any initial angle and angular velocity, a curve with that initial data satisfying the equation of motion within ε of the initial instant.",
+          "done": true,
+          "location": "Physlib/ClassicalMechanics/Pendulum/SimplePendulum/Solution.lean (SimplePendulum.exists_local_solution)"
+        },
+        {
           "description": "The API contains the small-angle limit, in which the pendulum is a harmonic oscillator of mass m ℓ² and spring constant m g ℓ, with the equivalence of the linearized equation of motion with the oscillator's, the existence and uniqueness of the small-angle motions, and the small-angle period 2π√(ℓ/g).",
           "done": true,
           "location": "Physlib/ClassicalMechanics/Pendulum/SimplePendulum/SmallAngle.lean (SimplePendulum.toHarmonicOscillator, SimplePendulum.linearizedEquationOfMotion_iff, SimplePendulum.smallAngleTrajectory_linearizedEquationOfMotion, SimplePendulum.linearized_unique, SimplePendulum.smallAnglePeriod_eq)"
@@ -412,6 +422,16 @@
           "description": "The API contains the relation between the full and the linearized dynamics, with the cubic bound m g ℓ |θ|³/6 on the linearization error of the torque and the identification of the difference of the variational gradients of the two actions with the difference of torque and linearized force.",
           "done": true,
           "location": "Physlib/ClassicalMechanics/Pendulum/SimplePendulum/SmallAngle.lean (SimplePendulum.abs_torque_add_linear_le, SimplePendulum.gradLagrangian_sub_toHarmonicOscillator)"
+        },
+        {
+          "description": "The API contains the classical formula 4√(ℓ/g) K(sin²(θ₀/2)) for the period of libration with amplitude θ₀, with its value 2π√(ℓ/g) at zero amplitude, its small-angle limit, monotonicity and bounds in the amplitude.",
+          "done": true,
+          "location": "Physlib/ClassicalMechanics/Pendulum/SimplePendulum/PeriodFormula.lean (SimplePendulum.periodFormula, SimplePendulum.periodFormula_neg, SimplePendulum.periodFormula_zero, SimplePendulum.continuousOn_periodFormula, SimplePendulum.continuousAt_periodFormula_zero, SimplePendulum.periodFormula_tendsto_smallAnglePeriod, SimplePendulum.periodFormula_mono, SimplePendulum.periodFormula_strictMono, SimplePendulum.monotoneOn_periodFormula, SimplePendulum.strictMonoOn_periodFormula, SimplePendulum.smallAnglePeriod_le_periodFormula, SimplePendulum.periodFormula_pos, SimplePendulum.periodFormula_le, SimplePendulum.periodFormula_le')"
+        },
+        {
+          "description": "The API contains the theorem that the period formula is the period of the solution of the equation of motion released from rest at the amplitude θ₀, for 0 < θ₀ < π.",
+          "done": false,
+          "location": "N/A"
         }
       ],
       "parents": [

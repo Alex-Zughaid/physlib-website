@@ -187,14 +187,14 @@ export default function ProjectIdeasPage() {
         >
           Joseph Tooby-Smith
         </a>{" "}
-        know, or make a pull-request to the Physlib{" "}
+        know, or make a pull-request to the{" "}
         <a
-          href={`${site.github}_Website`}
+          href={site.github}
           target="_blank"
           rel="noopener noreferrer"
           className="text-accent hover:underline underline-offset-2"
         >
-          website repo
+          Physlib repo
         </a>
         .
       </p>

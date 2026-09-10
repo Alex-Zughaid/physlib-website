@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { GetInvolvedCarousel } from "@/components/get-involved-carousel";
+import { GitHubIcon } from "@/components/monthly-updates/icons";
 
 export default function HomePage() {
   return (
@@ -71,6 +72,20 @@ export default function HomePage() {
             >
               <ZulipLogo />
               Join Community
+            </a>
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center gap-2 rounded px-6 text-sm font-medium transition-opacity hover:opacity-80"
+              style={{
+                background: "var(--github-button-bg)",
+                color: "var(--github-button-fg)",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              <GitHubIcon />
+              View Code
             </a>
           </div>
         </div>

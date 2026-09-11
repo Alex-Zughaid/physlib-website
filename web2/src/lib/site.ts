@@ -79,7 +79,7 @@ export const navSections: NavSection[] = [
     items: [
       { label: "AI guidelines", href: "/ai-guidelines" },
       { label: "PhyslibAItools", href: "/physlib-ai-tools" },
-      { label: "Prompts", href: "/prompts" },
+      { label: "Useful Prompts", href: "/prompts" },
     ],
   },
 ];

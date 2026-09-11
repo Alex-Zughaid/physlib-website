@@ -1,90 +1,93 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card } from "@heroui/react";
+import { Card, Chip } from "@heroui/react";
 import { CheckIcon, CopyIcon } from "@/components/monthly-updates/icons";
+import { SuggestPromptEditDialog } from "@/components/prompts/suggest-prompt-dialog";
 import { PREAMBLE } from "./preamble";
 
-const STORAGE_KEY = "physlib-prompts-folder";
+const FOLDER_STORAGE_KEY = "physlib-prompts-folder";
+const SOURCE_STORAGE_KEY = "physlib-prompts-source";
+
+type ChipColor = "accent" | "danger" | "default" | "success" | "warning";
 
 type PromptDef = {
   id: string;
   title: string;
+  category: string;
+  chipColor: ChipColor;
   summary: string;
-  template: (folder: string) => string;
+  template: (folder: string, source: string) => string;
 };
 
+// Appended by new-ideas/api-map when a source material path/URL is set -
+// omitted entirely otherwise, rather than pointing the agent at nothing.
+function sourceSentence(source: string): string {
+  return source
+    ? ` Use \`${source}\` as the source material to base this on.`
+    : "";
+}
+
 const PROMPTS: PromptDef[] = [
-    {
+  {
     id: "explain",
     title: "Explain",
-    summary: "Get a natural language description of what the code does..",
+    category: "Understand",
+    chipColor: "accent",
+    summary:
+      "Get a natural-language walkthrough of what the code in a folder does, how its pieces fit together, and where to start readin.",
     template: (folder) =>
       `Explain \`${folder}\` to me: what physical or mathematical topic it covers, how its main definitions and theorems relate to each other, and how it fits into the rest of Physlib. Point me to the key files/declarations to start reading.`,
   },
   {
     id: "new-ideas",
     title: "New ideas",
-    summary: "Research what's missing from this area and needs formalizing.",
-    template: (folder) =>
-      `Research \`${folder}\` and its existing API-map.yaml (if any) against the standard textbook/reference treatment of this topic. Identify definitions, theorems, or edge cases that are missing and would be worth formalizing next, and explain why each one matters. Don't write any Lean code — just produce a prioritized list of suggestions.`,
+    category: "Research",
+    chipColor: "warning",
+    summary:
+      "Have the agent compare a folder against the standard textbook treatment of its topic and come back with a prioritized list of what's missing.",
+    template: (folder, source) =>
+      `Research \`${folder}\` and its existing API-map.yaml (if any) against the standard textbook/reference treatment of this topic.${sourceSentence(source)} Identify definitions, theorems, or edge cases that are missing and would be worth formalizing next, and explain why each one matters. Don't write any Lean code — just produce a prioritized list of suggestions.`,
   },
   {
-    id: "sorry-finder",
-    title: "Sorry finder",
-    summary: "Find and attempt to close any sorrys left in the folder.",
-    template: (folder) =>
-      `Search \`${folder}\` for any \`sorry\` and try to complete the proof properly, without weakening the statement. If a proof genuinely can't be completed yet, leave it as \`sorry\` with a comment explaining what's missing and why it's hard.`,
+    id: "physlib-alpha",
+    title: "PhyslibAlpha",
+    category: "Cleanup",
+    chipColor: "danger",
+    summary: "Improve any sections of code in PhyslibAlpha.",
+    template: () =>
+      `Search through /PhyslibAlpha. This is the staging ground for code which has been submitted without adhering to the rigorous quality standards of /Physlib. The code may be in the wrong subfolder location or proofs may be too long etc. Your job is to find a self contained piece of work from this folder, improve the code quality, and insert it into the correct place in /Physlib.`,
   },
   {
     id: "golf",
     title: "Golf",
-    summary: "Shorten proofs that are longer than they need to be.",
+    category: "Refactor",
+    chipColor: "default",
+    summary:
+      "Shorten proofs that are longer than they need to be, without changing what they state — a good low-risk way to get familiar with a folder's style.",
     template: (folder) =>
       `Look at the proofs in \`${folder}\` and golf (shorten) any that are longer than necessary, without changing what they state. Preserve declaration names, types, and docstrings — only rewrite the proof term/tactic block. Run \`lake build\` afterwards to confirm nothing broke.`,
   },
   {
-    id: "rename",
-    title: "Rename",
-    summary: "Flag declaration names that don't match naming conventions.",
-    template: (folder) =>
-      `Review the declaration names in \`${folder}\` against Physlib's and mathlib's naming conventions (see the Getting Started guide). Suggest renames for anything unclear or inconsistent, and update every call site to match. Don't change the underlying statement or proof.`,
-  },
-  {
-    id: "doc-fixer",
-    title: "DocFixer",
-    summary: "Write or fix docstrings for declarations that need them.",
-    template: (folder) =>
-      `Find declarations in \`${folder}\` that are missing a docstring, or whose docstring is inaccurate or unclear, and write concise, accurate ones. Describe what the declaration means physically or mathematically, not just its type.`,
-  },
-  {
     id: "api-map",
     title: "APIMap",
-    summary: "Create or update the API-map.yaml describing this folder.",
-    template: (folder) =>
-      `Look at \`${folder}\` and either create a new \`API-map.yaml\` or update the existing one, listing each concrete requirement of the API implemented there, whether it's done, and its file/declaration location — following the schema used elsewhere in \`Physlib/**/API-map.yaml\`.`,
-  },
-  {
-    id: "import-minimizer",
-    title: "ImportMinimizer",
-    summary: "Remove imports that aren't actually needed.",
-    template: (folder) =>
-      `Check the \`import\` statements at the top of each file in \`${folder}\` and remove any that aren't actually needed by that file, without breaking \`lake build\`.`,
-  },
-  {
-    id: "lint-qi",
-    title: "LintQI",
-    summary: "Fix issues flagged by Physlib's linters.",
-    template: (folder) =>
-      `Run Physlib's linters over \`${folder}\` (or check its files by eye against them) and fix what they flag: missing docstrings, unused variables, \`sorry\`s, non-terminal \`simp\`, and other style violations from \`lake exe lint_qi\` / \`#lint\`.`,
+    category: "Docs",
+    chipColor: "accent",
+    summary:
+      "Create or refresh the API-map.yaml describing a folder's API, so the API tracker and dependency map stay accurate as the folder evolves.",
+    template: (folder, source) =>
+      `Look at \`${folder}\` and either create a new \`API-map.yaml\` or update the existing one, listing each concrete requirement of the API implemented there, whether it's done, and its file/declaration location — following the schema used elsewhere in \`Physlib/**/API-map.yaml\`.${sourceSentence(source)}`,
   },
   {
     id: "todo",
     title: "TODO",
-    summary: "Formalize an informal definition, lemma, or TODO comment.",
+    category: "New Code",
+    chipColor: "success",
+    summary:
+      "Pick up an existing TODO comment in a folder and turn it into a complete, sorry-free proof, rather than starting a formalization from scratch.",
     template: (folder) =>
-      `Look through the informal definitions, informal lemmas, semiformal results, and TODO comments in \`${folder}\` (see the TODO list) and formalize one of them properly, with a complete, sorry-free proof.`,
-  }
+      `Look through any TODO comments in \`${folder}\` and formalize one of them properly, with a complete, sorry-free proof.`,
+  },
 ];
 
 // Folders aren't tracked as their own data — derive them from the import
@@ -106,15 +109,19 @@ function deriveFolders(dotText: string): string[] {
 export function PromptsClient() {
   const [folders, setFolders] = useState<string[]>(["Physlib"]);
   const [folder, setFolder] = useState("Physlib");
+  const [source, setSource] = useState("");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    const storedSource = window.localStorage.getItem(SOURCE_STORAGE_KEY);
+    if (storedSource) setSource(storedSource);
+
     fetch("/my_graph.dot")
       .then((r) => r.text())
       .then((text) => {
         const derived = deriveFolders(text);
         setFolders(derived);
-        const stored = window.localStorage.getItem(STORAGE_KEY);
+        const stored = window.localStorage.getItem(FOLDER_STORAGE_KEY);
         if (stored && derived.includes(stored)) setFolder(stored);
         setReady(true);
       })
@@ -123,48 +130,83 @@ export function PromptsClient() {
 
   function handleFolderChange(next: string) {
     setFolder(next);
-    window.localStorage.setItem(STORAGE_KEY, next);
+    window.localStorage.setItem(FOLDER_STORAGE_KEY, next);
+  }
+
+  function handleSourceChange(next: string) {
+    setSource(next);
+    window.localStorage.setItem(SOURCE_STORAGE_KEY, next);
   }
 
   return (
     <div>
-      <div className="mb-10 rounded-xl border border-border bg-surface-secondary/40 p-4 sm:p-5">
-        <label
-          htmlFor="prompts-folder"
-          className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted/80"
-        >
-          Working folder
-        </label>
-        <select
-          id="prompts-folder"
-          value={folder}
-          disabled={!ready}
-          onChange={(e) => handleFolderChange(e.target.value)}
-          className="h-9 w-full max-w-md rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:border-accent focus:outline-none sm:w-auto"
-        >
-          {folders.map((f) => (
-            <option key={f} value={f}>
-              {f}
-            </option>
-          ))}
-        </select>
-        <p className="mt-2 text-xs text-muted">
-          Choose a folder to autofill the prompts below.
-        </p>
+      <div className="mb-10 grid gap-5 rounded-xl border border-border bg-surface-secondary/40 p-4 sm:grid-cols-2 sm:p-5">
+        <div>
+          <label
+            htmlFor="prompts-folder"
+            className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted/80"
+          >
+            Working folder
+          </label>
+          <select
+            id="prompts-folder"
+            value={folder}
+            disabled={!ready}
+            onChange={(e) => handleFolderChange(e.target.value)}
+            className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:border-accent focus:outline-none"
+          >
+            {folders.map((f) => (
+              <option key={f} value={f}>
+                {f}
+              </option>
+            ))}
+          </select>
+          <p className="mt-2 text-xs text-muted">
+            Choose a folder to autofill the prompts below.
+          </p>
+        </div>
+
+        <div>
+          <label
+            htmlFor="prompts-source"
+            className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted/80"
+          >
+            Research source material (optional)
+          </label>
+          <input
+            id="prompts-source"
+            type="text"
+            value={source}
+            onChange={(e) => handleSourceChange(e.target.value)}
+            placeholder="URL or file path, e.g. a textbook chapter or paper"
+            className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted/60 focus:border-accent focus:outline-none"
+          />
+          <p className="mt-2 text-xs text-muted">
+            Used when additional context can help the agent complete the task.
+          </p>
+        </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {PROMPTS.map((prompt) => (
-          <PromptCard key={prompt.id} prompt={prompt} folder={folder} />
+          <PromptCard key={prompt.id} prompt={prompt} folder={folder} source={source} />
         ))}
       </div>
     </div>
   );
 }
 
-function PromptCard({ prompt, folder }: { prompt: PromptDef; folder: string }) {
+function PromptCard({
+  prompt,
+  folder,
+  source,
+}: {
+  prompt: PromptDef;
+  folder: string;
+  source: string;
+}) {
   const [copied, setCopied] = useState<"prompt" | "preamble" | null>(null);
-  const text = prompt.template(folder);
+  const text = prompt.template(folder, source);
 
   async function onCopy(variant: "prompt" | "preamble") {
     try {
@@ -178,16 +220,19 @@ function PromptCard({ prompt, folder }: { prompt: PromptDef; folder: string }) {
   }
 
   return (
-    <Card variant="default">
-      <Card.Header>
+    <Card variant="default" className="flex h-full flex-col">
+      <Card.Header className="flex flex-row items-start justify-between gap-3">
         <Card.Title>{prompt.title}</Card.Title>
+        <Chip color={prompt.chipColor} variant="soft" size="sm" className="shrink-0 text-xs">
+          {prompt.category}
+        </Chip>
       </Card.Header>
-      <Card.Content className="text-sm text-foreground/90">
+      <Card.Content className="flex flex-1 flex-col text-sm text-foreground/90">
         <p className="mb-3 leading-relaxed text-muted">{prompt.summary}</p>
-        <p className="mb-3 max-h-56 select-text overflow-y-auto rounded-lg border border-border bg-surface-secondary/40 p-2.5 text-xs leading-relaxed text-foreground/90">
+        <p className="mb-3 max-h-64 select-text overflow-y-auto rounded-lg border border-border bg-surface-secondary/40 p-2.5 text-xs leading-relaxed text-foreground/90">
           {text}
         </p>
-        <div className="flex flex-wrap gap-2">
+        <div className="mt-auto flex flex-wrap gap-2 pt-1">
           <button
             type="button"
             onClick={() => onCopy("prompt")}
@@ -222,6 +267,11 @@ function PromptCard({ prompt, folder }: { prompt: PromptDef; folder: string }) {
               </>
             )}
           </button>
+          <SuggestPromptEditDialog
+            promptId={prompt.id}
+            promptTitle={prompt.title}
+            currentText={text}
+          />
         </div>
       </Card.Content>
     </Card>

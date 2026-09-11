@@ -74,6 +74,15 @@ export const navSections: NavSection[] = [
     label: "Support",
     items: [{ label: "Sponsor", href: "/sponsor" }],
   },
+  {
+    label: "AI tools",
+    items: [
+      { label: "AI guidelines", href: "/ai-guidelines" },
+      { label: "PhyslibAItools", href: "/physlib-ai-tools" },
+      { label: "Prompts", href: "/prompts" },
+      { label: "Graph Explorer", href: "/graph-explorer" },
+    ],
+  },
 ];
 
 export const primaryNav: NavItem[] = [

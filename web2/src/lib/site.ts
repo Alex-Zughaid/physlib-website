@@ -61,7 +61,6 @@ export const navSections: NavSection[] = [
       { label: "Project ideas", href: "/project-ideas" },
       { label: "Ways to contribute", href: "/get-involved" },
       { label: "Guide to contributing via GitHub", href: "/gh-guide" },
-      { label: "APIs", href: "/apis" },
     ],
   },
   {
@@ -75,6 +74,14 @@ export const navSections: NavSection[] = [
   {
     label: "Support",
     items: [{ label: "Sponsor", href: "/sponsor" }],
+  },
+  {
+    label: "AI tools",
+    items: [
+      { label: "AI guidelines", href: "/ai-guidelines" },
+      { label: "PhyslibAItools", href: "/physlib-ai-tools" },
+      { label: "Useful Prompts", href: "/prompts" },
+    ],
   },
 ];
 

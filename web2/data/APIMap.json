@@ -1,7 +1,7 @@
 {
   "repo": "leanprover-community/physlib",
   "branch": "master",
-  "generatedAt": "2026-09-07T09:25:47.698Z",
+  "generatedAt": "2026-09-14T09:55:46.202Z",
   "nodes": [
     {
       "path": "Physlib/ClassicalFieldTheory/GaugeTheory",
@@ -2298,13 +2298,13 @@
     {
       "path": "Physlib/SpaceAndTime/ReferenceFrame",
       "title": "Reference frame",
-      "overview": "An observer describing motion needs a coordinate grid, and the grid is a\nchoice rather than a feature of space. Two points of space determine a\ndisplacement, and a displacement acquires numerical components only once\naxes have been picked. Space carries a zero point of its own, but an\nobserver is under no obligation to use it: which point the coordinates call\nzero is part of the observer's choice. A reference frame is that pair of\nchoices, an origin and a set of axes, carried along through time.\n\nAn inertial frame is one whose grid is not being pushed around. Its axes are\nthe same at every time, and its origin drifts in a straight line at constant\nspeed, both measured against the affine structure that space itself\nsupplies. This is a restriction on the observer rather than on whatever is\nbeing observed, and it is the setting in which the familiar Newtonian\nstatements about free motion hold.\n\nA vector quantity measured by an observer, a relative position, a velocity,\nan acceleration, a force, a momentum, is a list of components read off that\nobserver's axes. Such lists add and scale componentwise regardless of which\nquantity they stand for, so they share one carrier here; the physical\ndimension, units and transformation law belong to whatever definition\nsupplies the quantity. Lengths and angles are the exception, since they are\ngeometric facts about the displacement rather than about the numbers: they\nare taken from the underlying space through the frame's axes, so that a grid\nwith skew or unequal axes cannot make the same physical displacement appear\nto change length. When the axes are orthonormal this reduces to the familiar\nEuclidean formulas, the sum of the squared components giving the squared\nlength and the sum of the componentwise products giving the inner product.",
+      "overview": "An observer describing motion needs a coordinate grid, and the grid is a\nchoice rather than a feature of space. Two points of space determine a\ndisplacement, and a displacement acquires numerical components only once\naxes have been picked. Space carries a zero point of its own, but an\nobserver is under no obligation to use it: which point the coordinates call\nzero is part of the observer's choice. Likewise, no instant of time is\ncanonically zero. A reference frame is that collection of choices: a time\norigin, and an origin and a set of axes carried along through time.\n\nAn inertial frame is one whose grid is not being pushed around. Its axes are\nthe same at every time, and its origin drifts in a straight line at constant\nspeed, both measured against the affine structure that space itself\nsupplies. This is a restriction on the observer rather than on whatever is\nbeing observed, and it is the setting in which the familiar Newtonian\nstatements about free motion hold.\n\nA vector quantity measured by an observer, a relative position, a velocity,\nan acceleration, a force, a momentum, is a list of components read off that\nobserver's axes. Such lists add and scale componentwise regardless of which\nquantity they stand for, so they share one carrier here; the physical\ndimension, units and transformation law belong to whatever definition\nsupplies the quantity. Lengths and angles are the exception, since they are\ngeometric facts about the displacement rather than about the numbers: they\nare taken from the underlying space through the frame's axes, so that a grid\nwith skew or unequal axes cannot make the same physical displacement appear\nto change length. When the axes are orthonormal this reduces to the familiar\nEuclidean formulas, the sum of the squared components giving the squared\nlength and the sum of the componentwise products giving the inner product.",
       "references": [],
       "requirements": [
         {
-          "description": "The key data structure `ReferenceFrame d`, recording an affine origin and a displacement basis at each time, is defined.",
+          "description": "The key data structure `ReferenceFrame d`, recording a time origin together with an affine origin and a displacement basis at each time, is defined.",
           "done": true,
-          "location": "Physlib/SpaceAndTime/ReferenceFrame.lean (ReferenceFrame, ReferenceFrame.origin, ReferenceFrame.basis)"
+          "location": "Physlib/SpaceAndTime/ReferenceFrame.lean (ReferenceFrame, ReferenceFrame.timeOrigin, ReferenceFrame.origin, ReferenceFrame.basis)"
         },
         {
           "description": "The API contains a construction of a frame from the trajectories of a collection of reference points forming an affine basis at each time.",
@@ -2368,8 +2368,8 @@
         },
         {
           "description": "The API shall contain a choice of time origin for a frame, so that time translations can act on frames.",
-          "done": false,
-          "location": "N/A"
+          "done": true,
+          "location": "Physlib/SpaceAndTime/ReferenceFrame.lean (ReferenceFrame.timeOrigin, ReferenceFrame.timeEquiv)"
         },
         {
           "description": "The API shall contain the defining property of an inertial frame's origin velocity, and the origin and basis of a frame built from reference points.",
@@ -2599,33 +2599,38 @@
     {
       "path": "Physlib/SpaceAndTime/Time",
       "title": "Time",
-      "overview": "The key data structure is `Time`, a structure with a single field `val : ℝ`\nrepresenting time with a given (but arbitrary) choice of units, origin and\norientation — the version of time most often used in non-relativistic physics,\nforming a 1d real inner-product space. The API also contains the time\nderivative `∂ₜ` of functions on `Time`, and the related types `TimeMan`,\n`TimeTransMan` and `TimeUnit`, versions of time with fewer choices made,\nrelated to `Time` via a choice of units or origin.",
+      "overview": "The key data structure is `Time`, a structure with a single field `val : ℝ`\nrepresenting instants of time with a given (but arbitrary) choice of units and\norientation. It is an affine space over `ℝ`: two instants determine a real elapsed\ntime, and no instant is canonically zero. Choosing the implicit origin `Time.mk 0`\ngives the version of time most often used in non-relativistic physics,\nforming a 1d real inner-product space. The API also contains the time\nderivative `∂ₜ` of functions on `Time`, and the related types `TimeMan`,\n`TimeTransMan` and `TimeUnit`, versions of time with fewer choices made,\nrelated to `Time` via a choice of units or origin.",
       "references": [],
       "requirements": [
         {
-          "description": "The key data structure `Time` (a structure with a single field `val : ℝ`, representing time with an arbitrary but fixed choice of units and origin) is defined.",
+          "description": "The key data structure `Time` (a structure with a single field `val : ℝ`, representing instants of time with an arbitrary but fixed choice of units and orientation) is defined.",
           "done": true,
           "location": "Physlib/SpaceAndTime/Time/Basic.lean (Time)"
         },
         {
-          "description": "The API contains an instance of a vector space (module) on `Time`, with an orthonormal basis and continuous linear/isometric equivalences to `ℝ`.",
+          "description": "The API contains the affine structure on `Time` over `ℝ`, with real-valued translations of instants and real-valued elapsed times between instants.",
           "done": true,
-          "location": "Physlib/SpaceAndTime/Time/Basic.lean (AddCommGroup Time, Module ℝ Time, basis : OrthonormalBasis (Fin 1) ℝ Time, toRealCLM, toRealCLE, toRealLIE)"
+          "location": "Physlib/SpaceAndTime/Time/Basic.lean (VAdd ℝ Time, VSub ℝ Time, AddTorsor ℝ Time, vadd_val, vsub_eq_val)"
+        },
+        {
+          "description": "The API contains an instance of a vector space (module) on `Time`, given the implicit origin `Time.mk 0`, with an orthonormal basis and continuous linear/isometric equivalences to `ℝ`.",
+          "done": true,
+          "location": "Physlib/SpaceAndTime/Time/InnerProductSpace.lean (AddCommGroup Time, Module ℝ Time, basis : OrthonormalBasis (Fin 1) ℝ Time, toRealCLM, toRealCLE, toRealLIE)"
         },
         {
           "description": "The API contains an ordering on `Time`.",
           "done": true,
-          "location": "Physlib/SpaceAndTime/Time/Basic.lean (LE Time, PartialOrder Time)"
+          "location": "Physlib/SpaceAndTime/Time/InnerProductSpace.lean (LE Time, PartialOrder Time)"
         },
         {
           "description": "The API contains a norm on `Time`, and an inner product making it a 1d real inner-product space.",
           "done": true,
-          "location": "Physlib/SpaceAndTime/Time/Basic.lean (Norm Time, NormedAddCommGroup Time, NormedSpace ℝ Time, InnerProductSpace ℝ Time)"
+          "location": "Physlib/SpaceAndTime/Time/InnerProductSpace.lean (Norm Time, NormedAddCommGroup Time, NormedSpace ℝ Time, InnerProductSpace ℝ Time)"
         },
         {
           "description": "The API contains a measure-theoretic structure on `Time` (a Borel measurable space, with the volume measure equal to the Haar measure associated with the basis).",
           "done": true,
-          "location": "Physlib/SpaceAndTime/Time/Basic.lean (MeasurableSpace Time, BorelSpace Time, volume_eq_basis_addHaar, val_measurePreserving)"
+          "location": "Physlib/SpaceAndTime/Time/InnerProductSpace.lean (MeasurableSpace Time, BorelSpace Time, volume_eq_basis_addHaar, val_measurePreserving)"
         },
         {
           "description": "The API contains the derivatives of functions from `Time` to normed spaces, with linearity, constant-function, quotient and smoothness lemmas, and compatibility with Euclidean and Lorentz-vector components.",
@@ -2883,17 +2888,17 @@
         {
           "description": "The key data structure `TemperatureUnit`, a choice of temperature scale carrying a positive scale factor, is defined.",
           "done": true,
-          "location": "Physlib/Thermodynamics/Temperature/TemperatureUnits.lean (TemperatureUnit, val_ne_zero, val_pos, Inhabited TemperatureUnit)"
+          "location": "Physlib/Thermodynamics/Temperature/TemperatureUnits.lean (TemperatureUnit); Physlib/Units/PositiveRealUnit.lean (PositiveRealUnitCore, PositiveRealUnitCore.val_ne_zero, PositiveRealUnitCore.pos, PositiveRealUnitCore.instInhabited)"
         },
         {
           "description": "The API contains the ratio of two temperature units as a nonnegative real, with its positivity and its reflexivity, symmetry and composition properties.",
           "done": true,
-          "location": "Physlib/Thermodynamics/Temperature/TemperatureUnits.lean (HDiv TemperatureUnit TemperatureUnit ℝ≥0, div_eq_val, div_ne_zero, div_pos, div_self, div_symm, div_mul_div, div_mul_div_coe)"
+          "location": "Physlib/Units/PositiveRealUnit.lean (PositiveRealUnitCore.instHDiv, PositiveRealUnitCore.div_eq_val, PositiveRealUnitCore.div_ne_zero, PositiveRealUnitCore.div_pos, PositiveRealUnitCore.div_self, PositiveRealUnitCore.div_symm, PositiveRealUnitCore.div_mul_div, PositiveRealUnitCore.div_mul_div_coe)"
         },
         {
           "description": "The API contains the rescaling of a temperature unit by a positive real, with the ratios it induces and its composition law.",
           "done": true,
-          "location": "Physlib/Thermodynamics/Temperature/TemperatureUnits.lean (scale, scale_div_self, self_div_scale, scale_one, scale_div_scale, scale_scale)"
+          "location": "Physlib/Units/PositiveRealUnit.lean (PositiveRealUnitCore.scale, PositiveRealUnitCore.scale_div_self, PositiveRealUnitCore.self_div_scale, PositiveRealUnitCore.scale_one, PositiveRealUnitCore.scale_div_scale, PositiveRealUnitCore.scale_scale)"
         },
         {
           "description": "The API contains kelvin as the reference temperature unit, together with the units obtained from it by rescaling.",
@@ -3089,7 +3094,7 @@
         {
           "description": "Units of electric current, of amount of substance and of luminous intensity are defined, each a positive magnitude with its quotient by another unit of the same kind.",
           "done": true,
-          "location": "Physlib/Units/SIUnitChoices.lean (CurrentUnit, CurrentUnit.val_pos, CurrentUnit.div_eq_val, AmountUnit, AmountUnit.div_eq_val, LuminousIntensityUnit, LuminousIntensityUnit.div_eq_val)"
+          "location": "Physlib/Units/SIUnitChoices.lean (CurrentUnit, AmountUnit, LuminousIntensityUnit); Physlib/Units/PositiveRealUnit.lean (PositiveRealUnitCore, PositiveRealUnitCore.pos, PositiveRealUnitCore.instHDiv, PositiveRealUnitCore.ratio, PositiveRealUnitCore.div_eq_val)"
         },
         {
           "description": "The coherent SI units ampere, mole and candela are named.",
@@ -3114,7 +3119,7 @@
         {
           "description": "The unit types for electric current, amount of substance and luminous intensity shall carry the same rescaling operation as the other five, so that a decimal multiple such as the milliampere can be named.",
           "done": true,
-          "location": "Physlib/Units/SIUnitChoices.lean (CurrentUnit.scale, CurrentUnit.scale_div_self, CurrentUnit.self_div_scale, CurrentUnit.scale_one, CurrentUnit.scale_div_scale, CurrentUnit.scale_scale, CurrentUnit.milliamperes, AmountUnit.scale, AmountUnit.scale_div_self, AmountUnit.self_div_scale, AmountUnit.scale_one, AmountUnit.scale_div_scale, AmountUnit.scale_scale, LuminousIntensityUnit.scale, LuminousIntensityUnit.scale_div_self, LuminousIntensityUnit.self_div_scale, LuminousIntensityUnit.scale_one, LuminousIntensityUnit.scale_div_scale, LuminousIntensityUnit.scale_scale)"
+          "location": "Physlib/Units/SIUnitChoices.lean (CurrentUnit.milliamperes); Physlib/Units/PositiveRealUnit.lean (PositiveRealUnitCore.scale, PositiveRealUnitCore.scale_div_self, PositiveRealUnitCore.self_div_scale, PositiveRealUnitCore.scale_one, PositiveRealUnitCore.scale_div_scale, PositiveRealUnitCore.scale_scale)"
         },
         {
           "description": "A unit-dependent type comes with the transformation of its elements induced by a change of unit, subject to composition along a chain of unit choices and triviality on an unchanged choice.",
@@ -3270,6 +3275,16 @@
           "description": "The equality of a length with a speed times a time holds propositionally rather than definitionally, so the two tagged types are bridged by a cast, and the same comparison is repeated over a set of base dimensions with no physical unit system, namely bits and symbols.",
           "done": true,
           "location": "Physlib/Units/ParametricDimensionExamples.lean (ParametricDimensionExamples.Info, ParametricDimensionExamples.bitDim, ParametricDimensionExamples.symbolDim)"
+        },
+        {
+          "description": "At a fixed numerical unit representation, dimension-tagged values inherit real-module and normed-space structures without replacing the existing additive operations or nonnegative-real action. Explicit coordinate equivalences transport functions and their Frechet derivatives.",
+          "done": true,
+          "location": "Physlib/Units/WithDim/Basic.lean (instModuleReal, real_smul_val); Physlib/Units/WithDim/Analysis.lean (toValueAddEquiv, toValueLinearEquiv, instNormedAddCommGroup, instNormedSpace, toValueLinearIsometryEquiv, transport, transportLinearMap, hasFDerivAt_transport)"
+        },
+        {
+          "description": "The harmonic oscillator example carries the mass and spring constant with their physical dimensions. Its potential-energy expression is assembled from dimension-tagged quantities, agrees in coordinates with the existing numerical oscillator, and reuses the generic derivative transport API.",
+          "done": true,
+          "location": "Physlib/ClassicalMechanics/HarmonicOscillator/WithDim.lean (HarmonicOscillatorWithDim, HarmonicOscillatorWithDim.toHarmonicOscillator, HarmonicOscillatorWithDim.positionNormSq, HarmonicOscillatorWithDim.potentialEnergy, HarmonicOscillatorWithDim.potentialEnergy_val, HarmonicOscillatorWithDim.potentialEnergy_eq_transport, HarmonicOscillatorWithDim.hasFDerivAt_potentialEnergy, HarmonicOscillatorWithDim.continuous_potentialEnergy)"
         }
       ],
       "parents": [

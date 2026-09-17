@@ -79,4 +79,9 @@ jobs:
           git config --global credential.helper store
           echo "https://x-access-token:${MIRROR_PAT}@github.com" > ~/.git-credentials
           git remote add mirror https://github.com/Gabrielebattimelli/Physlib-Website.git
-          git push mirror "HEAD:refs/heads/${GITHUB_REF_NAME}"
+          # See monthly-updates.yml: mirror-to-personal.yml rewrites authorship
+          # and force-pushes this same mirror, so its history is never a
+          # fast-forward descendant of this repo's commits and a plain push
+          # here is rejected as non-fast-forward. The mirror is a deploy
+          # artifact, not shared history, so force is correct here too.
+          git push --force mirror "HEAD:refs/heads/${GITHUB_REF_NAME}"

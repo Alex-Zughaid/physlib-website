@@ -965,7 +965,7 @@ const MISSING_GLYPH_MATH = [
   ["⟪", "\\langle\\!\\langle"], ["⟫", "\\rangle\\!\\rangle"],
   ["⟶", "\\longrightarrow"], ["⟹", "\\Longrightarrow"],
   ["⨂", "\\bigotimes"], ["⨅", "\\bigsqcap"], ["⨯", "\\times"],
-  ["⬝", "\\cdot"],
+  ["⬝", "\\cdot"], ["⋆", "\\star"],
   // Flattened parentheses (U+27EE/U+27EF).
   ["⟮", "\\lgroup"], ["⟯", "\\rgroup"],
   // Fraktur letters (U+1D504+ block) - mathlib uses these for ideals and
@@ -986,8 +986,8 @@ const MISSING_GLYPH_MATH = [
   ["ℰ", "\\mathcal{E}"],
   // Bold Latin capitals and lowercase (U+1D400+ block).
   ["𝐃", "\\mathbf{D}"], ["𝐀", "\\mathbf{A}"], ["𝐇", "\\mathbf{H}"],
-  ["𝐋", "\\mathbf{L}"], ["𝐔", "\\mathbf{U}"], ["𝐩", "\\mathbf{p}"],
-  ["𝐫", "\\mathbf{r}"], ["𝐱", "\\mathbf{x}"],
+  ["𝐋", "\\mathbf{L}"], ["𝐍", "\\mathbf{N}"], ["𝐔", "\\mathbf{U}"], ["𝐩", "\\mathbf{p}"],
+  ["𝐚", "\\mathbf{a}"], ["𝐫", "\\mathbf{r}"], ["𝐱", "\\mathbf{x}"],
   // Double-struck (blackboard bold, U+1D538+ block) - see also 𝕜 → \Bbbk
   // above, which has its own dedicated LaTeX command instead of \mathbb.
   ["𝕂", "\\mathbb{K}"], ["𝕕", "\\mathbb{d}"],

@@ -21,8 +21,6 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      HAS_MIRROR_PAT: ${{ secrets.MIRROR_PAT != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -64,21 +62,8 @@ jobs:
           git push origin "HEAD:${GITHUB_REF_NAME}"
           echo "committed=true" >> "$GITHUB_OUTPUT"
 
-      # See monthly-updates.yml for why this step exists: pushes made with the
-      # default GITHUB_TOKEN don't trigger mirror-to-personal.yml, so without
-      # this the references page would never reach the deployed (Vercel) site.
-      - name: Mirror to personal repo (Vercel)
-        if: steps.commit.outputs.committed == 'true' && env.HAS_MIRROR_PAT == 'true'
-        env:
-          MIRROR_PAT: ${{ secrets.MIRROR_PAT }}
-        run: |
-          git config --unset-all http.https://github.com/.extraheader || true
-          git config --global credential.helper store
-          echo "https://x-access-token:${MIRROR_PAT}@github.com" > ~/.git-credentials
-          git remote add mirror https://github.com/Gabrielebattimelli/Physlib-Website.git
-          # See monthly-updates.yml: mirror-to-personal.yml rewrites authorship
-          # and force-pushes this same mirror, so its history is never a
-          # fast-forward descendant of this repo's commits and a plain push
-          # here is rejected as non-fast-forward. The mirror is a deploy
-          # artifact, not shared history, so force is correct here too.
-          git push --force mirror "HEAD:refs/heads/${GITHUB_REF_NAME}"
+      # The site deploys via Gabrielebattimelli/Physlib-Website (Vercel).
+      # mirror-to-personal.yml keeps that mirror in sync, including for the
+      # commit just pushed above: it also runs on workflow_run for this
+      # workflow, which (unlike `push`) fires regardless of which token made
+      # the commit it's mirroring.

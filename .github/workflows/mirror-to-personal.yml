@@ -4,6 +4,18 @@ on:
   push:
     branches: ['**']
   delete:
+  # The generator workflows (monthly-updates, api-map, references) commit
+  # and push with the default GITHUB_TOKEN, which GitHub deliberately does
+  # not trigger the `push` event above for, to avoid recursion. workflow_run
+  # isn't subject to that restriction, so this is how their commits reach
+  # the mirror instead of each of them reimplementing this same mirroring
+  # (and its authorship rewrite) by hand.
+  workflow_run:
+    workflows:
+      - Generate monthly update
+      - Generate API map
+      - Generate references
+    types: [completed]
 
 # Force-pushes to the mirror must not race each other.
 concurrency:
@@ -14,7 +26,12 @@ jobs:
   mirror:
     # The mirror receives .github/ too, so without this guard the mirror repo
     # runs this workflow against itself and fails on the missing MIRROR_PAT.
-    if: github.repository == 'kernel-science/physlib-website'
+    # The conclusion check skips remirroring current main over a generator
+    # run that failed (or found nothing new to commit) - there's nothing new
+    # in that case, just the same state this workflow already mirrored.
+    if: |
+      github.repository == 'kernel-science/physlib-website' &&
+      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     steps:
       # Vercel's Hobby plan refuses to build any commit whose *author* is not the

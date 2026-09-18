@@ -69,6 +69,12 @@ export const navSections: NavSection[] = [
       { label: "Dependency graphs", href: "/dependencies" },
       { label: "References", href: "/references" },
       { label: "Search Physlib", href: site.search, external: true },
+      { label: "Documentation", href: "https://physlib.io/docs/index.html" },
+      {
+        label: "Verso docs",
+        href: "https://jstoobysmith.github.io/PhyslibVerso/",
+        external: true,
+      },
     ],
   },
   {

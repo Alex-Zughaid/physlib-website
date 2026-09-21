@@ -1,7 +1,7 @@
 {
   "repo": "leanprover-community/physlib",
   "branch": "master",
-  "generatedAt": "2026-09-14T09:55:46.202Z",
+  "generatedAt": "2026-09-21T09:59:50.659Z",
   "nodes": [
     {
       "path": "Physlib/ClassicalFieldTheory/GaugeTheory",
@@ -1814,7 +1814,7 @@
     {
       "path": "Physlib/Relativity/Fermions/Dirac",
       "title": "Dirac Fermions",
-      "overview": "A Dirac fermion is the four-component spinor built from a left-handed Weyl\nfermion together with a dual right-handed one. The key data structure is the\nstructure `Dirac`, which carries a module structure over ℂ, the chiral basis\nindexed by `Fin 4`, and the representation of SL(2, ℂ) induced from the two\nWeyl factors. Alongside it sit the gamma matrices in the Dirac\nrepresentation, which generate the Dirac algebra and realize it as a\nquotient of the Clifford algebra of the Minkowski quadratic form. Note that\nthe gamma matrices are written in the Dirac representation while `Dirac`\nitself is presented in the chiral basis; the change of basis between the two\nis not yet in the library, which is why the gamma action on `Dirac` is\nrecorded below as still to be built. Completing this API is what allows the\nDirac equation, the Dirac bilinears, and the fermionic terms of the Standard\nModel Lagrangian to be stated.",
+      "overview": "A Dirac fermion is the four-component spinor built from a left-handed Weyl\nfermion together with a dual right-handed one. The key data structure is the\nstructure `Dirac`, which carries a module structure over ℂ, the chiral basis\nindexed by `Fin 4`, and the representation of SL(2, ℂ) induced from the two\nWeyl factors. Gamma endomorphisms are defined directly in the chiral basis\nand satisfy the Clifford relations with Minkowski signature (+,-,-,-).\nTheir chirality operator defines complementary left and right chiral\nprojectors. A change of coordinates derives the concrete gamma matrices in\nthe Dirac representation from these endomorphisms. They generate the Dirac\nalgebra and realize it as a quotient of the Clifford algebra of the Minkowski\nquadratic form. Completing this API allows the\nDirac equation, the Dirac bilinears, and the fermionic terms of the Standard\nModel Lagrangian to be stated.",
       "references": [
         "Dreiner, Haber and Martin, Two-component spinor techniques and Feynman rules for quantum field theory and supersymmetry, Phys. Rept. 494 (2010) 1-196. https://arxiv.org/abs/0812.1594 (Dirac fermions are treated on page 197 of the arXiv version)"
       ],
@@ -1850,12 +1850,12 @@
           "location": "Physlib/Relativity/Fermions/Dirac/Basic.lean (decomposeRepEquiv)"
         },
         {
-          "description": "The gamma matrices in the Dirac representation are defined, together with the chirality matrix and the set they form.",
+          "description": "The gamma matrices in the Dirac representation are derived from the gamma endomorphisms, together with the chirality matrix and the set they form.",
           "done": true,
-          "location": "Physlib/Relativity/CliffordAlgebra.lean (γ0, γ1, γ2, γ3, γ5, γ, γSet, γ_in_γSet)"
+          "location": "Physlib/Relativity/CliffordAlgebra.lean (γ0, γ1, γ2, γ3, γ5, γ5_eq_endEquivMatrix, γSet, γ_in_γSet)"
         },
         {
-          "description": "The Dirac algebra generated over ℝ by the gamma matrices is defined, and contains each gamma matrix.",
+          "description": "The Dirac algebra generated over ℝ by the Dirac representations of the gamma endomorphisms is defined, and contains each generator, indexed by Fin 1 ⊕ Fin 3.",
           "done": true,
           "location": "Physlib/Relativity/CliffordAlgebra.lean (diracAlgebra, γSet_subset_diracAlgebra, γ_in_diracAlgebra)"
         },
@@ -1870,14 +1870,34 @@
           "location": "N/A"
         },
         {
-          "description": "The API shall contain the action of the gamma matrices on `Dirac` as linear maps (blocked: `γ0`--`γ3` are given in the Dirac representation while `chiralBasis` is the chiral basis, so this needs the change of basis between the two to be fixed first).",
+          "description": "Clifford multiplication is a real linear map from Lorentz vectors to complex linear endomorphisms of `Dirac`, using its chiral basis and Physlib's Pauli-matrix conventions. Upper-index gamma components are derived from this map on the Lorentz basis.",
+          "done": true,
+          "location": "Physlib/Relativity/Fermions/Dirac/GammaMatrices.lean (gammaMatrix, gammaMatrix_toMatrix, gammaMatrix_basis_toMatrix, gamma, gammaMatrix_basis, gammaMatrix_eq_sum, gamma_toMatrix)"
+        },
+        {
+          "description": "Clifford multiplication satisfies the anticommutator for arbitrary Lorentz vectors and their Minkowski product. The component relations, squares, and anticommutation for distinct indices follow with signature (+,-,-,-).",
+          "done": true,
+          "location": "Physlib/Relativity/Fermions/Dirac/GammaMatrices.lean (gammaMatrix_basis_anticomm, gammaMatrix_anticomm, gammaMatrix_mul_self, gamma_anticomm, gamma_mul_self, gamma_inl_zero_mul_self, gamma_inr_mul_self, gamma_mul_gamma_of_ne)"
+        },
+        {
+          "description": "The chirality endomorphism is defined, has chiral matrix diag(-1,-1,1,1), squares to the identity, and anticommutes with every gamma endomorphism.",
+          "done": true,
+          "location": "Physlib/Relativity/Fermions/Dirac/GammaMatrices.lean (gamma5, gamma5_toMatrix, gamma5_mul_self, gamma5_mul_gamma, gamma5_mul_gammaMatrix)"
+        },
+        {
+          "description": "The left and right chiral projectors have the corresponding diagonal matrices, are idempotent and orthogonal, and sum to the identity.",
+          "done": true,
+          "location": "Physlib/Relativity/Fermions/Dirac/GammaMatrices.lean (leftChiralProjector, rightChiralProjector, leftChiralProjector_toMatrix, rightChiralProjector_toMatrix, leftChiralProjector_mul_self, rightChiralProjector_mul_self, leftChiralProjector_mul_rightChiralProjector, rightChiralProjector_mul_leftChiralProjector, leftChiralProjector_add_rightChiralProjector)"
+        },
+        {
+          "description": "The API shall contain the Lorentz equivariance of the chiral projectors.",
           "done": false,
           "location": "N/A"
         },
         {
-          "description": "The API shall contain the chiral projectors onto the left-handed and dual right-handed components, and their Lorentz equivariance.",
-          "done": false,
-          "location": "N/A"
+          "description": "An algebra equivalence converts Dirac endomorphisms to the Dirac representation, with an explicit change-of-coordinates formula from the chiral basis.",
+          "done": true,
+          "location": "Physlib/Relativity/Fermions/Dirac/Basic.lean (endEquivMatrix, endEquivMatrix_apply)"
         },
         {
           "description": "The API shall contain the Dirac adjoint of a Dirac fermion.",
@@ -2534,6 +2554,11 @@
           "description": "The API contains a map from `SpaceTime` to `Space` and `Time`.",
           "done": true,
           "location": "Physlib/SpaceAndTime/SpaceTime/Basic.lean (space, time, toTimeAndSpace)"
+        },
+        {
+          "description": "The spatial projection intertwines the Lorentz and Euclidean actions of the same special orthogonal rotation about the coordinate origin.",
+          "done": true,
+          "location": "Physlib/SpaceAndTime/SpaceTime/Basic.lean (space_equivariant)"
         },
         {
           "description": "The API contains the derivatives of functions from `SpaceTime` to a normed space.",

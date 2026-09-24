@@ -34,7 +34,7 @@ function ReferenceMeta({ reference }: { reference: Reference }) {
             href={reference.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-foreground hover:text-accent hover:underline underline-offset-2"
+            className="text-accent hover:underline underline-offset-2"
           >
             {title}
           </a>

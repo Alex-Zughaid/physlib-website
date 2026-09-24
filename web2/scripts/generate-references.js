@@ -207,6 +207,11 @@ function bibEntryUrl(fields) {
   }
   if (fields.doi) return `https://doi.org/${fields.doi}`;
   if (fields.eprint) return `https://arxiv.org/abs/${fields.eprint}`;
+  // Plenty of entries with no DOI/eprint (lecture notes, wiki pages, GitHub
+  // files, standards documents) still carry an explicit `url` field - the
+  // maintainers' own choice of where this reference points, so it's at
+  // least as trustworthy as the derived arXiv/DOI links above.
+  if (fields.url) return fields.url;
   return null;
 }
 

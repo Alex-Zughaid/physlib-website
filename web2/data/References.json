@@ -1,7 +1,7 @@
 {
   "repo": "leanprover-community/physlib",
   "branch": "master",
-  "generatedAt": "2026-09-21T10:03:13.070Z",
+  "generatedAt": "2026-09-24T08:58:18.457Z",
   "references": [
     {
       "key": "abramowitz_stegun_1964",
@@ -823,7 +823,7 @@
       "title": "International Bureau of Weights and Measures (BIPM), The International System of Units (SI Brochure)",
       "year": "2019",
       "venue": "2019",
-      "url": null,
+      "url": "https://www.bipm.org/documents/d/guest/si-brochure-9-en-pdf",
       "citations": [
         {
           "file": "Physlib/SpaceAndTime/Space/LengthUnit.lean",
@@ -873,7 +873,7 @@
       "title": "The Lorentz Group",
       "year": "2015",
       "venue": "2015",
-      "url": null,
+      "url": "https://diposit.ub.edu/dspace/bitstream/2445/68763/2/memoria.pdf",
       "citations": [
         {
           "file": "Physlib/Relativity/LorentzGroup/Boosts/Generalized.lean",
@@ -1079,7 +1079,7 @@
       "title": null,
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://github.com/lean-dojo/LeanDojo/blob/main/src/lean_dojo/data_extraction/ExtractData.lean",
       "citations": [
         {
           "file": "Physlib/Meta/TransverseTactics.lean",
@@ -1111,7 +1111,7 @@
       "title": null,
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://github.com/dwrensha/tryAtEachStep/blob/main/tryAtEachStep.lean",
       "citations": [
         {
           "file": "Physlib/Meta/TransverseTactics.lean",
@@ -1235,7 +1235,7 @@
       "title": "IAU 2012 Resolution B2 (the astronomical unit)",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://iauarchive.eso.org/static/resolutions/IAU2012_English.pdf",
       "citations": [
         {
           "file": "Physlib/SpaceAndTime/Space/LengthUnit.lean",
@@ -1261,7 +1261,7 @@
       "title": "IAU 2015 Resolution B2 (the exact parsec convention)",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://iauarchive.eso.org/static/resolutions/IAU2015_English.pdf",
       "citations": [
         {
           "file": "Physlib/SpaceAndTime/Space/LengthUnit.lean",
@@ -1289,7 +1289,7 @@
       "title": "Recommendations concerning Units (SI Units)",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://iauarchive.eso.org/publications/proceedings_rules/units/",
       "citations": [
         {
           "file": "Physlib/SpaceAndTime/Space/LengthUnit.lean",
@@ -1359,7 +1359,7 @@
       "title": "Lorentz Transformations, Rotations, and Boosts",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://cdn.ku.edu.tr/cdn/files/amostafazadeh/phys517_518/phys517_2016f/Handouts/A_Jaffi_Lorentz_Group.pdf",
       "citations": [
         {
           "file": "Physlib/Relativity/LorentzGroup/Basic.lean",
@@ -1808,7 +1808,7 @@
       "title": "Simple Analytic Expressions for the Magnetic Field of a Circular Current Loop",
       "year": "2001",
       "venue": "2001",
-      "url": null,
+      "url": "https://ntrs.nasa.gov/api/citations/20140002333/downloads/20140002333.pdf",
       "citations": [
         {
           "file": "Physlib/Electromagnetism/Current/CircularCoil.lean",
@@ -1872,7 +1872,7 @@
       "title": "NIST Digital Library of Mathematical Functions",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://dlmf.nist.gov/",
       "citations": [
         {
           "file": "Physlib/Mathematics/SpecialFunctions/EllipticIntegral.lean",
@@ -2042,7 +2042,7 @@
       "title": "MSci 4261 Electromagnetism: Lecture Notes X.10.1, The Energy-Momentum Tensor",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://ph.qmul.ac.uk/sites/default/files/EMT10new.pdf",
       "citations": [
         {
           "file": "Physlib/Electromagnetism/Distributional/Basic.lean",
@@ -2223,6 +2223,28 @@
       "count": 1
     },
     {
+      "key": "Souriau1970",
+      "inBib": true,
+      "type": "book",
+      "authors": [
+        "Jean-Marie Souriau"
+      ],
+      "authorSortKey": "souriau",
+      "title": "Structure des syst\\`emes dynamiques",
+      "year": "1970",
+      "venue": "Dunod, Ma\\^itrises de math\\'ematiques, (1970)",
+      "url": null,
+      "citations": [
+        {
+          "file": "PhyslibAlpha/ClassicalMechanics/MomentMap.lean",
+          "line": 81,
+          "subfolder": "PhyslibAlpha/ClassicalMechanics",
+          "url": "https://github.com/leanprover-community/physlib/blob/master/PhyslibAlpha/ClassicalMechanics/MomentMap.lean#L81"
+        }
+      ],
+      "count": 1
+    },
+    {
       "key": "stackexchange_qc_12953",
       "inBib": true,
       "type": "misc",
@@ -2231,7 +2253,7 @@
       "title": "Quantum Computing Stack Exchange answer 12953",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://quantumcomputing.stackexchange.com/a/12953/10115",
       "citations": [],
       "count": 0
     },
@@ -2269,7 +2291,7 @@
       "title": "Structure and Interpretation of Classical Mechanics",
       "year": "2001",
       "venue": "MIT Press, (2001)",
-      "url": null,
+      "url": "https://groups.csail.mit.edu/mac/users/gjs/6946/sicm-html/book-Z-H-36.html#%_sec_3.1.2",
       "citations": [
         {
           "file": "Physlib/ClassicalMechanics/HamiltonsEquations.lean",
@@ -2291,7 +2313,7 @@
       "title": "Introductory Variational Calculus on Manifolds",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://web.williams.edu/Mathematics/it3/texts/var_noether.pdf",
       "citations": [
         {
           "file": "Physlib/ClassicalMechanics/HarmonicOscillator/Basic.lean",
@@ -2335,7 +2357,7 @@
       "title": "Tomamichel, Quantum Relative Entropy - An Axiomatic Approach",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://www.marcotom.info/files/entropy-masterclass2022.pdf",
       "citations": [],
       "count": 0
     },
@@ -2365,7 +2387,7 @@
       "title": "Lectures on Statistical Physics",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://www.damtp.cam.ac.uk/user/tong/aqm/aqmtwo.pdf",
       "citations": [
         {
           "file": "Physlib/CondensedMatter/TightBindingChain/Basic.lean",
@@ -2399,7 +2421,7 @@
       "title": "Cambridge Lecture Notes on Statistical Physics, part one",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://www.damtp.cam.ac.uk/user/tong/statphys/one.pdf",
       "citations": [
         {
           "file": "Physlib/StatisticalMechanics/CanonicalEnsemble/Basic.lean",
@@ -2421,7 +2443,7 @@
       "title": "Cambridge Lecture Notes on Statistical Physics, part two",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://www.damtp.cam.ac.uk/user/tong/statphys/two.pdf",
       "citations": [
         {
           "file": "Physlib/StatisticalMechanics/CanonicalEnsemble/Basic.lean",
@@ -2465,7 +2487,7 @@
       "title": "Modern Supersymmetry: Slides -- Spinor Feynman Rules",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://particle.physics.ucdavis.edu/modernsusy/slides/slideimages/spinorfeynrules.pdf",
       "citations": [
         {
           "file": "Physlib/QFT/PerturbationTheory/FieldSpecification/Basic.lean",
@@ -2493,7 +2515,7 @@
       "title": "Quantum Physics (UCSD Physics 130) -- Course Notes",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://quantummechanics.ucsd.edu/ph130a/130_notes/node452.html",
       "citations": [
         {
           "file": "Physlib/Electromagnetism/Distributional/Basic.lean",
@@ -2549,7 +2571,7 @@
       "title": "alpha-z Relative Entropies",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://warwick.ac.uk/fac/sci/maths/research/events/2013-2014/statmech/su/Nilanjana-slides.pdf",
       "citations": [],
       "count": 0
     },
@@ -2562,7 +2584,7 @@
       "title": "Watrous, Max-relative entropy and conditional min-entropy",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://cs.uwaterloo.ca/~watrous/QIT-notes/QIT-notes.02.pdf",
       "citations": [],
       "count": 0
     },
@@ -2577,7 +2599,7 @@
       "title": "The Theory of Quantum Information",
       "year": "2018",
       "venue": "Cambridge University Press, (2018)",
-      "url": null,
+      "url": "https://cs.uwaterloo.ca/~watrous/TQI/TQI.8.pdf",
       "citations": [
         {
           "file": "QuantumInfo/Capacity/Capacity.lean",
@@ -2619,7 +2641,7 @@
       "title": "Classical electromagnetism and special relativity",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://en.wikipedia.org/wiki/Classical_electromagnetism_and_special_relativity",
       "citations": [
         {
           "file": "Physlib/Electromagnetism/Kinematics/Boosts.lean",
@@ -2639,7 +2661,7 @@
       "title": "Complex differential form (Dolbeault operators)",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://en.wikipedia.org/wiki/Complex_differential_form",
       "citations": [
         {
           "file": "Physlib/Mathematics/Calculus/Wirtinger/Basic.lean",
@@ -2659,7 +2681,7 @@
       "title": "Mathematical descriptions of the electromagnetic field (gauge freedom)",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://en.wikipedia.org/wiki/Mathematical_descriptions_of_the_electromagnetic_field#Gauge_freedom",
       "citations": [
         {
           "file": "Physlib/Electromagnetism/Kinematics/GaugeTransformation.lean",
@@ -2679,7 +2701,7 @@
       "title": "Levi-Civita symbol",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://en.wikipedia.org/wiki/Levi-Civita_symbol",
       "citations": [
         {
           "file": "Physlib/Mathematics/LeviCivita/Basic.lean",
@@ -2699,7 +2721,7 @@
       "title": "Lorentz transformation",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://en.wikipedia.org/wiki/Lorentz_transformation",
       "citations": [
         {
           "file": "Physlib/SpaceAndTime/SpaceTime/Boosts.lean",
@@ -2719,7 +2741,7 @@
       "title": "Rigged Hilbert space",
       "year": null,
       "venue": "",
-      "url": null,
+      "url": "https://en.wikipedia.org/wiki/Rigged_Hilbert_space",
       "citations": [
         {
           "file": "Physlib/QuantumMechanics/HilbertSpaces/SpaceD/MomentumStates.lean",

@@ -1,7 +1,7 @@
 {
   "repo": "leanprover-community/physlib",
   "branch": "master",
-  "generatedAt": "2026-09-21T10:03:13.070Z",
+  "generatedAt": "2026-09-28T11:02:50.651Z",
   "references": [
     {
       "key": "abramowitz_stegun_1964",
@@ -480,15 +480,15 @@
       "citations": [
         {
           "file": "Physlib/QuantumMechanics/PoschlTeller/Basic.lean",
-          "line": 40,
+          "line": 53,
           "subfolder": "Physlib/QuantumMechanics",
-          "url": "https://github.com/leanprover-community/physlib/blob/master/Physlib/QuantumMechanics/PoschlTeller/Basic.lean#L40"
+          "url": "https://github.com/leanprover-community/physlib/blob/master/Physlib/QuantumMechanics/PoschlTeller/Basic.lean#L53"
         },
         {
           "file": "Physlib/QuantumMechanics/PoschlTeller/Basic.lean",
-          "line": 48,
+          "line": 59,
           "subfolder": "Physlib/QuantumMechanics",
-          "url": "https://github.com/leanprover-community/physlib/blob/master/Physlib/QuantumMechanics/PoschlTeller/Basic.lean#L48"
+          "url": "https://github.com/leanprover-community/physlib/blob/master/Physlib/QuantumMechanics/PoschlTeller/Basic.lean#L59"
         }
       ],
       "count": 2
@@ -2223,6 +2223,46 @@
       "count": 1
     },
     {
+      "key": "Souriau1970",
+      "inBib": true,
+      "type": "book",
+      "authors": [
+        "Jean-Marie Souriau"
+      ],
+      "authorSortKey": "souriau",
+      "title": "Structure des syst\\`emes dynamiques",
+      "year": "1970",
+      "venue": "Dunod, Ma\\^itrises de math\\'ematiques, (1970)",
+      "url": null,
+      "citations": [
+        {
+          "file": "PhyslibAlpha/ClassicalMechanics/MomentMap/Basic.lean",
+          "line": 81,
+          "subfolder": "PhyslibAlpha/ClassicalMechanics",
+          "url": "https://github.com/leanprover-community/physlib/blob/master/PhyslibAlpha/ClassicalMechanics/MomentMap/Basic.lean#L81"
+        },
+        {
+          "file": "PhyslibAlpha/ClassicalMechanics/MomentMap/Cohomology.lean",
+          "line": 75,
+          "subfolder": "PhyslibAlpha/ClassicalMechanics",
+          "url": "https://github.com/leanprover-community/physlib/blob/master/PhyslibAlpha/ClassicalMechanics/MomentMap/Cohomology.lean#L75"
+        },
+        {
+          "file": "PhyslibAlpha/ClassicalMechanics/MomentMap/GalileanMass.lean",
+          "line": 99,
+          "subfolder": "PhyslibAlpha/ClassicalMechanics",
+          "url": "https://github.com/leanprover-community/physlib/blob/master/PhyslibAlpha/ClassicalMechanics/MomentMap/GalileanMass.lean#L99"
+        },
+        {
+          "file": "PhyslibAlpha/ClassicalMechanics/MomentMap/GalileanMassCocycle.lean",
+          "line": 103,
+          "subfolder": "PhyslibAlpha/ClassicalMechanics",
+          "url": "https://github.com/leanprover-community/physlib/blob/master/PhyslibAlpha/ClassicalMechanics/MomentMap/GalileanMassCocycle.lean#L103"
+        }
+      ],
+      "count": 4
+    },
+    {
       "key": "stackexchange_qc_12953",
       "inBib": true,
       "type": "misc",
@@ -2384,9 +2424,15 @@
           "line": 53,
           "subfolder": "Physlib/StatisticalMechanics",
           "url": "https://github.com/leanprover-community/physlib/blob/master/Physlib/StatisticalMechanics/CanonicalEnsemble/Lemmas.lean#L53"
+        },
+        {
+          "file": "PhyslibAlpha/CondensedMatter/TightBindingChain/OpenBoundary.lean",
+          "line": 37,
+          "subfolder": "PhyslibAlpha/CondensedMatter",
+          "url": "https://github.com/leanprover-community/physlib/blob/master/PhyslibAlpha/CondensedMatter/TightBindingChain/OpenBoundary.lean#L37"
         }
       ],
-      "count": 3
+      "count": 4
     },
     {
       "key": "tong_statphys_notes_one",
